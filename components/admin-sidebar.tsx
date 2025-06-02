@@ -1,8 +1,18 @@
-"use client"
+"use client";
 
-import { LayoutDashboard, FileText, Users, Receipt, Settings, LogOut, UserPlus, ClipboardList } from "lucide-react"
-import Link from "next/link"
+import {
+  ClipboardList,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Receipt,
+  Settings,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -14,46 +24,45 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/sidebar";
 
 const menuItems = [
   {
     title: "Dashboard",
-    url: "/admin",
+    url: "/",
     icon: LayoutDashboard,
   },
   {
     title: "Permintaan Proposal",
-    url: "/admin/proposals",
+    url: "/proposals",
     icon: FileText,
   },
   {
     title: "Manajemen User",
-    url: "/admin/users",
+    url: "/users",
     icon: Users,
   },
   {
     title: "Buat Akun User",
-    url: "/admin/create-user",
+    url: "/create-user",
     icon: UserPlus,
   },
   {
     title: "Invoice",
-    url: "/admin/invoices",
+    url: "/invoices",
     icon: Receipt,
   },
   {
     title: "Progress Pekerjaan",
-    url: "/admin/progress",
+    url: "/progress",
     icon: ClipboardList,
   },
   {
     title: "Pengaturan",
-    url: "/admin/settings",
+    url: "/settings",
     icon: Settings,
   },
-]
+];
 
 export function AdminSidebar() {
   return (
@@ -92,5 +101,5 @@ export function AdminSidebar() {
         </Button>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
