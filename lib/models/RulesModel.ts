@@ -10,12 +10,15 @@ export interface IRules extends Document {
 }
 
 // Define the schema
-const DataSchema: Schema<IRules> = new mongoose.Schema({
-  no: { type: Number, required: true },
-  ruleCode: { type: String, required: true },
-  rule: { type: String, required: true },
-  description: { type: String, required: true },
-});
+const DataSchema: Schema<IRules> = new mongoose.Schema(
+  {
+    no: { type: Number, required: true },
+    ruleCode: { type: String, required: true },
+    rule: { type: String, required: true },
+    description: { type: String, required: true },
+  },
+  { timestamps: true, versionKey: false }
+);
 
 // Define the model
 const RulesModel: Model<IRules> =

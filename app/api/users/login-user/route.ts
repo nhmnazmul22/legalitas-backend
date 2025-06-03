@@ -32,7 +32,7 @@ export async function GET(req: Request) {
       });
     }
 
-    if (user.status !== "active") {
+    if (user.status !== "aktif") {
       return NextResponse.json({
         status: "Failed",
         message: "User account not active",

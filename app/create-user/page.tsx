@@ -196,7 +196,7 @@ export default function CreateUserPage() {
                   <SelectValue placeholder="Pilih status akun" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">Aktif</SelectItem>
+                  <SelectItem value="aktif">Aktif</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="suspended">Suspended</SelectItem>
                 </SelectContent>

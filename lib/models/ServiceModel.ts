@@ -23,7 +23,7 @@ const DataSchema: Schema<IService> = new mongoose.Schema({
   price: { type: String, required: true },
   link: { type: String, required: true },
   thumbnail: { type: String, required: true },
-});
+}, { timestamps: true, versionKey: false });
 
 // Define the model
 const ServiceModel: Model<IService> =

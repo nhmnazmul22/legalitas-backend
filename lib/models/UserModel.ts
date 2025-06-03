@@ -17,19 +17,22 @@ export interface IUser extends Document {
 }
 
 // Define the schema
-const DataSchema: Schema<IUser> = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true },
-  whatsappNumber: { type: String, required: true },
-  service: { type: String, require: true },
-  username: { type: String, require: true },
-  password: { type: String, required: true },
-  notes: { type: String },
-  status: { type: String, required: true },
-  picture: { type: String },
-  address: { type: String },
-  voucherCode: { type: Number },
-});
+const DataSchema: Schema<IUser> = new mongoose.Schema(
+  {
+    fullName: { type: String, required: true },
+    email: { type: String, required: true },
+    whatsappNumber: { type: String, required: true },
+    service: { type: String, require: true },
+    username: { type: String, require: true },
+    password: { type: String, required: true },
+    notes: { type: String },
+    status: { type: String, required: true },
+    picture: { type: String },
+    address: { type: String },
+    voucherCode: { type: Number },
+  },
+  { timestamps: true, versionKey: false }
+);
 
 // Define the model
 const UserModel: Model<IUser> =

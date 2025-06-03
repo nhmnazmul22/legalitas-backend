@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/config/db";
-import UserModel from "@/lib/models/UserModel";
+import ProposalModel from "@/lib/models/ProposalModel";
 import { NextResponse } from "next/server";
 
 // Load Database
@@ -9,17 +9,17 @@ const LoadDataBase = () => {
 
 LoadDataBase();
 
-// Get All Users Request
+// Get Proposal Request
 export const GET = async (request: Request) => {
   try {
-    const users = await UserModel.find({}).select("-password");
-    if (users.length === 0) {
+    const proposals = await ProposalModel.find({});
+    if (proposals.length === 0) {
       return NextResponse.json({
         status: "Failed",
-        message: "Users not found",
+        message: "Proposals not found",
       });
     }
-    return NextResponse.json({ status: "Successful", data: users });
+    return NextResponse.json({ status: "Successful", data: proposals });
   } catch (err: any) {
     return NextResponse.json({
       status: "Failed",

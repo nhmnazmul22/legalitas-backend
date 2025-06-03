@@ -1,8 +1,21 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { FileText, Users, Receipt, Clock } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import api from "@/lib/config/axios";
+import { UserType } from "@/types";
+import { Clock, FileText, Receipt, Users } from "lucide-react";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const res = await api.get("/api/users/get-user");
+  const datas: UserType[] = res.data.data;
+
+  const activeUser = datas.filter((user) => user.status === "aktif");
+
   const stats = [
     {
       title: "Permintaan Proposal Baru",
@@ -13,7 +26,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Total User Aktif",
-      value: "48",
+      value: activeUser.length,
       description: "User terdaftar",
       icon: Users,
       color: "bg-green-500",
@@ -32,7 +45,7 @@ export default function AdminDashboard() {
       icon: Clock,
       color: "bg-purple-500",
     },
-  ]
+  ];
 
   const recentProposals = [
     {
@@ -56,13 +69,15 @@ export default function AdminDashboard() {
       status: "Approved",
       date: "2024-01-13",
     },
-  ]
+  ];
 
   return (
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Dashboard Admin</h1>
-        <p className="text-muted-foreground">Selamat datang di panel admin Legalitas</p>
+        <p className="text-muted-foreground">
+          Selamat datang di panel admin Legalitas
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -70,14 +85,18 @@ export default function AdminDashboard() {
         {stats.map((stat, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
               <div className={`p-2 rounded-md ${stat.color}`}>
                 <stat.icon className="w-4 h-4 text-white" />
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.description}</p>
+              <p className="text-xs text-muted-foreground">
+                {stat.description}
+              </p>
             </CardContent>
           </Card>
         ))}
@@ -87,16 +106,25 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>Permintaan Proposal Terbaru</CardTitle>
-          <CardDescription>Daftar permintaan proposal yang masuk hari ini</CardDescription>
+          <CardDescription>
+            Daftar permintaan proposal yang masuk hari ini
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {recentProposals.map((proposal) => (
-              <div key={proposal.id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div
+                key={proposal.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div className="space-y-1">
                   <p className="font-medium">{proposal.client}</p>
-                  <p className="text-sm text-muted-foreground">{proposal.service}</p>
-                  <p className="text-xs text-muted-foreground">ID: {proposal.id}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {proposal.service}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    ID: {proposal.id}
+                  </p>
                 </div>
                 <div className="text-right space-y-1">
                   <Badge
@@ -104,13 +132,15 @@ export default function AdminDashboard() {
                       proposal.status === "Baru"
                         ? "destructive"
                         : proposal.status === "Review"
-                          ? "default"
-                          : "secondary"
+                        ? "default"
+                        : "secondary"
                     }
                   >
                     {proposal.status}
                   </Badge>
-                  <p className="text-xs text-muted-foreground">{proposal.date}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {proposal.date}
+                  </p>
                 </div>
               </div>
             ))}
@@ -118,5 +148,5 @@ export default function AdminDashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
