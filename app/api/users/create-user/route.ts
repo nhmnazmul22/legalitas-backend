@@ -11,9 +11,9 @@ const LoadDataBase = () => {
 LoadDataBase();
 
 // Create new User
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const body = await req.json();
+    const body = await request.json();
     const {
       fullName,
       email,
@@ -34,18 +34,18 @@ export async function POST(req: Request) {
       !password ||
       !status
     ) {
-      return NextResponse.json(
-        { message: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        status: "Failed",
+        message: "Missing required fields",
+      });
     }
 
     const prevUser = await UserModel.findOne({ username: username });
     if (prevUser) {
-      return NextResponse.json(
-        { message: "User Name already exists" },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        status: "Failed",
+        message: "User Name already exists",
+      });
     }
 
     // hashed the password with bcrypt
@@ -62,51 +62,8 @@ export async function POST(req: Request) {
       status,
     });
 
-    return NextResponse.json({ data: user, status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message, status: 500 });
-  }
-}
-
-// Login the users
-export async function GET(req: Request) {
-  try {
-    const { username, password } = await req.json();
-
-    const user = await UserModel.findOne({
-      username: username,
-    });
-
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return NextResponse.json(
-        { message: "Invalid password" },
-        { status: 401 }
-      );
-    }
-
-    if (user.status !== "active") {
-      return NextResponse.json(
-        { message: "User account not active" },
-        { status: 401 }
-      );
-    }
-
-    return NextResponse.json({
-      message: "Login successful",
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-        status: user.status,
-      },
-    });
-  } catch (err) {
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json({ status: "Successful", data: user });
+  } catch (err: any) {
+    return NextResponse.json({ status: "Failed", message: err.toString() });
   }
 }

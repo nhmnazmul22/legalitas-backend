@@ -11,7 +11,7 @@ const LoadDataBase = () => {
 LoadDataBase();
 
 // Login the users
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
     const { username, password } = await req.json();
 
@@ -26,17 +26,17 @@ export async function POST(req: Request) {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return NextResponse.json(
-        { message: "Invalid password" },
-        { status: 401 }
-      );
+      return NextResponse.json({
+        status: "Failed",
+        message: "Invalid password",
+      });
     }
 
     if (user.status !== "active") {
-      return NextResponse.json(
-        { message: "User account not active" },
-        { status: 401 }
-      );
+      return NextResponse.json({
+        status: "Failed",
+        message: "User account not active",
+      });
     }
 
     return NextResponse.json({
@@ -48,8 +48,7 @@ export async function POST(req: Request) {
         status: user.status,
       },
     });
-  } catch (err) {
-    console.error("Login error:", err);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  } catch (err: any) {
+    return NextResponse.json({ status: "Failed", message: err.toString() });
   }
 }

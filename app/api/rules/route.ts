@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/config/db";
-import UserModel from "@/lib/models/UserModel";
+import RulesModel from "@/lib/models/RulesModel";
 import { NextResponse } from "next/server";
 
 // Load Database
@@ -9,17 +9,17 @@ const LoadDataBase = () => {
 
 LoadDataBase();
 
-// Get All Users Request
+// Get Service Request
 export const GET = async (request: Request) => {
   try {
-    const users = await UserModel.find({});
-    if (users.length === 0) {
+    const rules = await RulesModel.find({});
+    if (rules.length === 0) {
       return NextResponse.json({
         status: "Failed",
-        message: "Users not found",
+        message: "Rules not found",
       });
     }
-    return NextResponse.json({ status: "Successful", data: users });
+    return NextResponse.json({ status: "Successful", data: rules });
   } catch (err: any) {
     return NextResponse.json({
       status: "Failed",

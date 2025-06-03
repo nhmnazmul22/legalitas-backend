@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { services } from "@/constants";
 import api from "@/lib/config/axios";
 import { Send, UserPlus } from "lucide-react";
 import { useState } from "react";
@@ -142,11 +143,11 @@ export default function CreateUserPage() {
                     <SelectValue placeholder="Pilih layanan" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pendirian-pt">Pendirian PT</SelectItem>
-                    <SelectItem value="pendirian-cv">Pendirian CV</SelectItem>
-                    <SelectItem value="trademark">Trademark</SelectItem>
-                    <SelectItem value="izin-usaha">Izin Usaha</SelectItem>
-                    <SelectItem value="lainnya">Lainnya</SelectItem>
+                    {services.map((item) => (
+                      <SelectItem key={item.id} value={item.value}>
+                        {item.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

@@ -3,20 +3,25 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const userId = params.id;
+  const userId = (await params).id;
 
   try {
-    // Simulate a fetch from a database or external API
     const user = await UserModel.findById(userId);
 
     if (!user) {
-      return NextResponse.json({ message: "User not found", status: 404 });
+      return NextResponse.json({
+        status: "Failed",
+        message: "User not found",
+      });
     }
 
-    return NextResponse.json({ data: user, status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: "Failed to fetch user", status: 500 });
+    return NextResponse.json({ status: "Successful", data: user });
+  } catch (err: any) {
+    return NextResponse.json({
+      status: "Failed",
+      message: err.toString(),
+    });
   }
 }
