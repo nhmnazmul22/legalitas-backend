@@ -1,10 +1,23 @@
+"use client";
+
+import { SkeletonCard } from "@/components/skeleton/SkeletonCard";
 import UserCard from "@/components/UserCard";
 import api from "@/lib/config/axios";
 import { UserType } from "@/types";
+import { useEffect, useState } from "react";
 
-export default async function UsersPage() {
-  const res = await api.get("/api/users/get-user");
-  const datas: UserType[] = res.data.data;
+export default function UsersPage() {
+  const [users, setUsers] = useState<UserType[]>([]);
+
+  const fetchUsers = async () => {
+    const res = await api.get("/api/users/get-user");
+    const datas: UserType[] = res.data.data;
+    setUsers(datas);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="p-6 space-y-6">
@@ -16,20 +29,22 @@ export default async function UsersPage() {
       </div>
 
       <div className="grid gap-6">
-        {datas.length > 0
-          ? datas.map((user) => (
-              <UserCard
-                key={user._id}
-                _id={user._id}
-                fullName={user.fullName}
-                email={user.email}
-                username={user.username}
-                whatsappNumber={user.whatsappNumber}
-                service={user.service}
-                status={user.status}
-              />
-            ))
-          : "No data Found"}
+        {users.length > 0 ? (
+          users.map((user) => (
+            <UserCard
+              key={user._id}
+              _id={user._id}
+              fullName={user.fullName}
+              email={user.email}
+              username={user.username}
+              whatsappNumber={user.whatsappNumber}
+              service={user.service}
+              status={user.status}
+            />
+          ))
+        ) : (
+          <SkeletonCard />
+        )}
       </div>
     </div>
   );
