@@ -1,4 +1,6 @@
 import { dbConnect } from "@/lib/config/db";
+import ServiceModel from "@/lib/models/ServiceModel";
+import { NextResponse } from "next/server";
 
 // Load Database
 const LoadDataBase = () => {
@@ -10,13 +12,18 @@ LoadDataBase();
 // Get Service Request
 export const GET = async (request: Request) => {
   try {
-    return new Response(JSON.stringify({ message: "Success" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    const services = await ServiceModel.find({});
+    if (services.length === 0) {
+      return NextResponse.json({
+        status: "Failed",
+        message: "Services not found",
+      });
+    }
+    return NextResponse.json({ status: "Successful", data: services });
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.toString() }), {
-      status: 500,
+    return NextResponse.json({
+      status: "Failed",
+      message: err.toString(),
     });
   }
 };

@@ -107,7 +107,6 @@ export async function GET(req: Request) {
       },
     });
   } catch (err) {
-    console.error("Login error:", err);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

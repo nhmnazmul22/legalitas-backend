@@ -42,7 +42,7 @@ export default function CreateUserPage() {
   };
 
   const createUser = async () => {
-    const res = await api.post("/api/users", form);
+    const res = await api.post("/api/users/create-user", form);
     return res.data;
   };
 
