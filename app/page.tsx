@@ -6,15 +6,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import api from "@/lib/config/axios";
 import { UserType } from "@/types";
 import { Clock, FileText, Receipt, Users } from "lucide-react";
 
 export default async function AdminDashboard() {
-  const res = await api.get("/api/users/get-user");
-  const datas: UserType[] = res.data.data;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/get-user`,
+    {
+      cache: "no-store",
+    }
+  );
+  const datas: UserType[] = (await res.json()).data;
 
-  const activeUser = datas.filter((user) => user.status === "aktif");
+  const activeUser = datas && datas.filter((user) => user.status === "aktif");
 
   const stats = [
     {
