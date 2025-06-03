@@ -24,27 +24,25 @@ const services: ServiceType[] = [
   { id: "svc-13", title: "Izin PSE", value: "Izin PSE" },
   { id: "svc-14", title: "Izin K3L", value: "Izin K3L" },
   { id: "svc-15", title: "Izin Yayasan", value: "Izin Yayasan" },
-  { id: "svc-16", title: "33++ Izin Lainnya", value: "33++ Izin Lainnya" },
-  { id: "svc-17", title: "Virtual Office", value: "Virtual Office" },
+  { id: "svc-16", title: "Virtual Office", value: "Virtual Office" },
   {
-    id: "svc-18",
+    id: "svc-17",
     title: "Perubahan Anggaran Dasar",
     value: "Perubahan Anggaran Dasar",
   },
   {
-    id: "svc-19",
+    id: "svc-18",
     title: "Penutupan Perusahaan",
     value: "Penutupan Perusahaan",
   },
   {
-    id: "svc-20",
+    id: "svc-19",
     title: "Perjanjian Pisah Harta",
     value: "Perjanjian Pisah Harta",
   },
-  { id: "svc-21", title: "Pendaftaran Merek", value: "Pendaftaran Merek" },
-  { id: "svc-22", title: "KITAS Pekerja", value: "KITAS Pekerja" },
-  { id: "svc-23", title: "KITAS Investor", value: "KITAS Investor" },
-  { id: "svc-24", title: "17++ Layanan", value: "17++ Layanan" },
+  { id: "svc-20", title: "Pendaftaran Merek", value: "Pendaftaran Merek" },
+  { id: "svc-21", title: "KITAS Pekerja", value: "KITAS Pekerja" },
+  { id: "svc-22", title: "KITAS Investor", value: "KITAS Investor" },
 ];
 
 export { services };
