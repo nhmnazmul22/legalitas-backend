@@ -12,7 +12,7 @@ export const formatDate = (date: string) => {
 
 const allowedOrigins = [
   "http://localhost:3001",
-  "https://legalitas.vercel.app/",
+  "https://legalitas.vercel.app",
 ];
 
 export function getCorsHeaders(request: Request) {
