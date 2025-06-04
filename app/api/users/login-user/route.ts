@@ -12,7 +12,7 @@ const LoadDataBase = () => {
 LoadDataBase();
 
 // Login the users
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   const headers = getCorsHeaders(request);
 
   try {
@@ -21,6 +21,7 @@ export async function GET(request: Request) {
     const user = await UserModel.findOne({
       username: username,
     });
+    console.log(user);
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
