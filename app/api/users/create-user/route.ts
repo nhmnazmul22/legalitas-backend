@@ -1,5 +1,6 @@
 import { dbConnect } from "@/lib/config/db";
 import UserModel from "@/lib/models/UserModel";
+import { getCorsHeaders } from "@/lib/utils";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -12,6 +13,8 @@ LoadDataBase();
 
 // Create new User
 export async function POST(request: Request) {
+  const headers = getCorsHeaders(request);
+
   try {
     const body = await request.json();
     const {
@@ -34,18 +37,30 @@ export async function POST(request: Request) {
       !password ||
       !status
     ) {
-      return NextResponse.json({
-        status: "Failed",
-        message: "Missing required fields",
-      });
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "Missing required fields",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
     }
 
     const prevUser = await UserModel.findOne({ username: username });
     if (prevUser) {
-      return NextResponse.json({
-        status: "Failed",
-        message: "User Name already exists",
-      });
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "User Name already exists",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
     }
 
     // hashed the password with bcrypt
@@ -62,8 +77,20 @@ export async function POST(request: Request) {
       status,
     });
 
-    return NextResponse.json({ status: "Successful", data: user });
+    return NextResponse.json(
+      { status: "Successful", data: user },
+      {
+        status: 200,
+        headers,
+      }
+    );
   } catch (err: any) {
-    return NextResponse.json({ status: "Failed", message: err.toString() });
+    return NextResponse.json(
+      { status: "Failed", message: err.toString() },
+      {
+        status: 500,
+        headers,
+      }
+    );
   }
 }

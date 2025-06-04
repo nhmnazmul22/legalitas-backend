@@ -1,5 +1,6 @@
 import { dbConnect } from "@/lib/config/db";
 import UserModel from "@/lib/models/UserModel";
+import { getCorsHeaders } from "@/lib/utils";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -11,9 +12,11 @@ const LoadDataBase = () => {
 LoadDataBase();
 
 // Login the users
-export async function GET(req: Request) {
+export async function GET(request: Request) {
+  const headers = getCorsHeaders(request);
+
   try {
-    const { username, password } = await req.json();
+    const { username, password } = await request.json();
 
     const user = await UserModel.findOne({
       username: username,
@@ -26,29 +29,53 @@ export async function GET(req: Request) {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return NextResponse.json({
-        status: "Failed",
-        message: "Invalid password",
-      });
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "Invalid password",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
     }
 
     if (user.status !== "aktif") {
-      return NextResponse.json({
-        status: "Failed",
-        message: "User account not active",
-      });
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "User account not active",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
     }
 
-    return NextResponse.json({
-      message: "Login successful",
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-        status: user.status,
+    return NextResponse.json(
+      {
+        message: "Login successful",
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+          status: user.status,
+        },
       },
-    });
+      {
+        status: 200,
+        headers,
+      }
+    );
   } catch (err: any) {
-    return NextResponse.json({ status: "Failed", message: err.toString() });
+    return NextResponse.json(
+      { status: "Failed", message: err.toString() },
+      {
+        status: 500,
+        headers,
+      }
+    );
   }
 }

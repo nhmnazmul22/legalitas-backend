@@ -15,3 +15,22 @@ export interface UserType {
   status: string;
   address?: string;
 }
+
+export interface RequestedProposal {
+  _id?:string | number;
+  id?: string | number;
+  clientName: string;
+  clientEmail: string;
+  clientWhatsAppNumber: string;
+  voucherCode: string | null;
+  status: string;
+  createdAt?: string;
+  updatedAt?: string; 
+  proposalDetails: {
+    _id: string;
+    category: string;
+    name: string;
+    price: string;
+    features: string[];
+  };
+};

@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -6,31 +7,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { UserType } from "@/types";
+import { useFetch } from "@/hooks/useFetch";
+import { RequestedProposal, UserType } from "@/types";
 import { Clock, FileText, Receipt, Users } from "lucide-react";
 
-export default async function AdminDashboard() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/get-user`,
-    {
-      cache: "no-store",
-    }
+export default function AdminDashboard() {
+  const { data: users } = useFetch<UserType[]>("api/users/get-user");
+  const { data: proposals } = useFetch<RequestedProposal[]>(
+    "api/proposals/request-proposal"
   );
-  const datas: UserType[] = (await res.json()).data;
 
-  const activeUser = datas && datas.filter((user) => user.status === "aktif");
+  const activeUser = users && users.filter((user) => user.status === "aktif");
+  const newProposals =
+    proposals && proposals.filter((prop) => prop.status === "new");
 
   const stats = [
     {
       title: "Permintaan Proposal Baru",
-      value: "12",
+      value: newProposals?.length,
       description: "Menunggu review",
       icon: FileText,
       color: "bg-blue-500",
     },
     {
       title: "Total User Aktif",
-      value: activeUser.length,
+      value: activeUser?.length,
       description: "User terdaftar",
       icon: Users,
       color: "bg-green-500",
