@@ -2,6 +2,14 @@ import UserModel from "@/lib/models/UserModel";
 import { getCorsHeaders } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
+export async function OPTIONS(request: Request) {
+  const headers = getCorsHeaders(request);
+  return new NextResponse(null, {
+    status: 204,
+    headers,
+  });
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

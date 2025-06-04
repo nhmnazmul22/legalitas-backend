@@ -11,6 +11,14 @@ const LoadDataBase = () => {
 
 LoadDataBase();
 
+export async function OPTIONS(request: Request) {
+  const headers = getCorsHeaders(request);
+  return new NextResponse(null, {
+    status: 204,
+    headers,
+  });
+}
+
 // Create new User
 export async function POST(request: Request) {
   const headers = getCorsHeaders(request);

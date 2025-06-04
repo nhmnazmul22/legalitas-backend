@@ -3,6 +3,14 @@ import { getCorsHeaders } from "@/lib/utils";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
+export async function OPTIONS(request: Request) {
+  const headers = getCorsHeaders(request);
+  return new NextResponse(null, {
+    status: 204,
+    headers,
+  });
+}
+
 // User update and password update request
 export async function PUT(
   request: Request,

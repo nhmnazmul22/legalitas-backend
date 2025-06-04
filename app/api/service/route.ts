@@ -10,6 +10,14 @@ const LoadDataBase = () => {
 
 LoadDataBase();
 
+export async function OPTIONS(request: Request) {
+  const headers = getCorsHeaders(request);
+  return new NextResponse(null, {
+    status: 204,
+    headers,
+  });
+}
+
 // Get Service Request
 export const GET = async (request: Request) => {
   const headers = getCorsHeaders(request);
