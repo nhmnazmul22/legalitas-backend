@@ -19,7 +19,10 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { redirect } from "next/navigation";
-import CKEditorWrapper from "@/components/CKEditorWrapper";
+
+const CKEditorWrapper = dynamic(() => import("@/components/CKEditorWrapper"), {
+  ssr: false,
+});
 
 export default function AddArticlePage() {
   const { items } = useSelector((state: RootState) => state.blog);
