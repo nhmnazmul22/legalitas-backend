@@ -144,7 +144,7 @@ export default function AddArticlePage() {
           <Label htmlFor="content">Contents</Label>
           <div className="editor border border-gray-300 rounded-md overflow-hidden">
             <CKEditor
-              editor={ClassicEditor}
+              editor={ClassicEditor as any}
               data={content}
               onChange={(_, editor) => {
                 const html = editor.getData();

@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {
   Select,
   SelectContent,
@@ -143,7 +143,7 @@ export default function AddArticlePage() {
           <Label htmlFor="content">Contents</Label>
           <div className="editor border border-gray-300 rounded-md overflow-hidden">
             <CKEditor
-              editor={ClassicEditor}
+              editor={ClassicEditor as any}
               data={content}
               onChange={(_, editor) => {
                 const html = editor.getData();
