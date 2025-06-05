@@ -58,6 +58,11 @@ const menuItems = [
     icon: ClipboardList,
   },
   {
+    title: "Artikel",
+    url: "/artikel",
+    icon: ClipboardList,
+  },
+  {
     title: "Pengaturan",
     url: "/settings",
     icon: Settings,

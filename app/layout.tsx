@@ -4,11 +4,14 @@ import { Toaster } from "@/components/ui/sonner";
 import { Poppins } from "next/font/google";
 import type React from "react";
 import "./globals.css";
+import StoreProvider from "@/context/StoreProvider";
+
 const poppinsSans = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
+
 export default function RootLayout({
   children,
 }: {
@@ -19,7 +22,9 @@ export default function RootLayout({
       <body className={`${poppinsSans.className} antialiased`}>
         <SidebarProvider>
           <AdminSidebar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <StoreProvider>{children}</StoreProvider>
+          </main>
           <Toaster />
         </SidebarProvider>
       </body>

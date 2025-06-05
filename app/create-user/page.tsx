@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,11 +19,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { services } from "@/constants";
 import api from "@/lib/config/axios";
+import { RootState } from "@/store";
 import { Send, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function CreateUserPage() {
+  const proposal = useSelector((state: RootState) => state.proposal.proposal);
+
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -77,6 +80,18 @@ export default function CreateUserPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (proposal) {
+      setForm((prev) => ({
+        ...prev,
+        fullName: proposal.clientName,
+        email: proposal.clientEmail,
+        whatsappNumber: proposal.clientWhatsAppNumber,
+        service: proposal.proposalDetails.category,
+      }));
+    }
+  }, []);
 
   return (
     <div className="p-6 space-y-6">
@@ -136,6 +151,7 @@ export default function CreateUserPage() {
               <div>
                 <Label htmlFor="service">Layanan</Label>
                 <Select
+                  key={form.service}
                   value={form.service}
                   onValueChange={(val) => handleChange("service", val)}
                 >

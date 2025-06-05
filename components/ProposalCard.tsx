@@ -21,7 +21,9 @@ import { Eye, UserPlus, Send } from "lucide-react";
 import { RequestedProposal } from "@/types";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setProposal } from "@/store/proposalSlice";
+import type { AppDispatch } from "@/store";
 export const ProposalCard: React.FC<RequestedProposal> = ({
   clientName,
   clientEmail,
@@ -30,6 +32,22 @@ export const ProposalCard: React.FC<RequestedProposal> = ({
   createdAt,
   proposalDetails,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const addProposalInfo = () => {
+    dispatch(
+      setProposal({
+        clientName,
+        clientEmail,
+        clientWhatsAppNumber,
+        status,
+        createdAt,
+        proposalDetails,
+      })
+    );
+    return;
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -97,7 +115,7 @@ export const ProposalCard: React.FC<RequestedProposal> = ({
                 </div>
               </DialogContent>
             </Dialog>
-            <Link href="/create-user">
+            <Link href="/create-user" onClick={addProposalInfo}>
               <Button size="sm">
                 <UserPlus className="w-4 h-4 mr-2" />
                 Buat Akun

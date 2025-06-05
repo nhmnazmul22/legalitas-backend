@@ -14,18 +14,19 @@ export interface UserType {
   notes?: string;
   status: string;
   address?: string;
+  createdAt?: string;
 }
 
 export interface RequestedProposal {
-  _id?:string | number;
+  _id?: string | number;
   id?: string | number;
   clientName: string;
   clientEmail: string;
   clientWhatsAppNumber: string;
-  voucherCode: string | null;
+  voucherCode?: string | null;
   status: string;
   createdAt?: string;
-  updatedAt?: string; 
+  updatedAt?: string;
   proposalDetails: {
     _id: string;
     category: string;
@@ -33,4 +34,24 @@ export interface RequestedProposal {
     price: string;
     features: string[];
   };
-};
+}
+
+export interface CommentType {
+  name: string;
+  email: string;
+  website?: string; // optional
+  comment: string;
+}
+
+export interface BlogType {
+  _id?: string;
+  title?: string;
+  thumbnail?: string;
+  shortDes?: string;
+  content?: string;
+  tags?: string[];
+  category?: string;
+  authorId?: string;
+  comments?: CommentType[];
+  createdAt?: string;
+}

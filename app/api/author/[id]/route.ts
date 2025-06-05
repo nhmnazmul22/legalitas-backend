@@ -1,14 +1,6 @@
-import { dbConnect } from "@/lib/config/db";
-import UserModel from "@/lib/models/UserModel";
+import AuthorModel from "@/lib/models/AuthorModel";
 import { getCorsHeaders } from "@/lib/utils";
 import { NextResponse } from "next/server";
-
-// Load Database
-const LoadDataBase = () => {
-  dbConnect();
-};
-
-LoadDataBase();
 
 export async function OPTIONS(request: Request) {
   const headers = getCorsHeaders(request);
@@ -18,19 +10,21 @@ export async function OPTIONS(request: Request) {
   });
 }
 
-// Get All Users Request
-export const GET = async (request: Request) => {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const headers = getCorsHeaders(request);
+  const authorId = (await params).id;
 
   try {
-    const users = await UserModel.find({})
-      .select("-password")
-      .sort({ createdAt: -1 });
-    if (users.length === 0) {
+    const author = await AuthorModel.findById(authorId);
+
+    if (!author) {
       return NextResponse.json(
         {
           status: "Failed",
-          message: "Users not found",
+          message: "Author not found",
         },
         {
           status: 404,
@@ -38,8 +32,9 @@ export const GET = async (request: Request) => {
         }
       );
     }
+
     return NextResponse.json(
-      { status: "Successful", data: users },
+      { status: "Successful", data: author },
       {
         status: 200,
         headers,
@@ -57,4 +52,4 @@ export const GET = async (request: Request) => {
       }
     );
   }
-};
+}

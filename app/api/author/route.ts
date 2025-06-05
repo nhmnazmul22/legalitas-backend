@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/config/db";
-import UserModel from "@/lib/models/UserModel";
+import AuthorModel from "@/lib/models/AuthorModel";
 import { getCorsHeaders } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
@@ -18,42 +18,40 @@ export async function OPTIONS(request: Request) {
   });
 }
 
-// Get All Users Request
-export const GET = async (request: Request) => {
+// Create Author
+export const POST = async (request: Request) => {
   const headers = getCorsHeaders(request);
-
   try {
-    const users = await UserModel.find({})
-      .select("-password")
-      .sort({ createdAt: -1 });
-    if (users.length === 0) {
+    const body = await request.json();
+    const { authorName, bio } = body;
+
+    if (!authorName || !bio) {
       return NextResponse.json(
         {
           status: "Failed",
-          message: "Users not found",
+          message: "Missing required fields",
         },
         {
-          status: 404,
+          status: 400,
           headers: headers,
         }
       );
     }
+
+    const author = await AuthorModel.create({ ...body });
     return NextResponse.json(
-      { status: "Successful", data: users },
+      { status: "Successful", data: author },
       {
-        status: 200,
-        headers,
+        status: 201,
+        headers: headers,
       }
     );
   } catch (err: any) {
     return NextResponse.json(
-      {
-        status: "Failed",
-        message: err.toString(),
-      },
+      { status: "Failed", message: err.toString() },
       {
         status: 500,
-        headers,
+        headers: headers,
       }
     );
   }

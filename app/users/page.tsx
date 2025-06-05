@@ -40,6 +40,7 @@ export default function UsersPage() {
               whatsappNumber={user.whatsappNumber}
               service={user.service}
               status={user.status}
+              createdAt={user?.createdAt}
             />
           ))
         ) : (

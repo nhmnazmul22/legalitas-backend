@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { formatDate } from "@/lib/utils";
 import { UserType } from "@/types";
 import { Eye, FileText, Receipt, Send } from "lucide-react";
 
@@ -29,6 +30,7 @@ const UserCard: React.FC<UserType> = ({
   whatsappNumber,
   service,
   username,
+  createdAt,
 }) => {
   return (
     <Card>
@@ -38,7 +40,6 @@ const UserCard: React.FC<UserType> = ({
             <CardTitle className="flex items-center gap-2">
               {fullName}
               <Badge
-                
                 className={`${
                   status === "aktif"
                     ? "bg-green-500 hover:bg-green-500"
@@ -51,8 +52,7 @@ const UserCard: React.FC<UserType> = ({
               </Badge>
             </CardTitle>
             <CardDescription>
-              @{username} • {service}
-              {/* • Bergabung: {user.joinDate} */}
+              @{username} • {service} • {createdAt && `Bergabung: ${formatDate(createdAt)} `}
             </CardDescription>
           </div>
           <div className="flex gap-2">
