@@ -17,6 +17,7 @@ import {
 import { services } from "@/constants";
 import api from "@/lib/config/axios";
 import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 export default function AddArticlePage() {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
