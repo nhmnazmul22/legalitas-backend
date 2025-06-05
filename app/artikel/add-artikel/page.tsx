@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {
   Select,
   SelectContent,
@@ -18,6 +16,7 @@ import { services } from "@/constants";
 import api from "@/lib/config/axios";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
+import CKEditorWrapper from "@/components/CKEditorWrapper";
 
 export default function AddArticlePage() {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
@@ -139,43 +138,7 @@ export default function AddArticlePage() {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="content">Contents</Label>
-          <div className="editor border border-gray-300 rounded-md overflow-hidden">
-            <CKEditor
-              editor={ClassicEditor as any}
-              data={content}
-              onChange={(_, editor) => {
-                const html = editor.getData();
-                setContent(html);
-              }}
-              config={{
-                toolbar: [
-                  "heading",
-                  "|",
-                  "bold",
-                  "italic",
-                  "link",
-                  "bulletedList",
-                  "numberedList",
-                  "|",
-                  "blockQuote",
-                  "insertTable",
-                  "undo",
-                  "redo",
-                ],
-                ui: {
-                  viewportOffset: { top: 20 }, // Optional padding
-                },
-              }}
-            />
-          </div>
-          <style jsx global>{`
-            .ck-editor__editable {
-              min-height: 400px !important;
-            }
-          `}</style>
-        </div>
+        <CKEditorWrapper content={content} setContent={setContent} />
 
         {/* Category */}
         <div className="flex flex-col gap-2">

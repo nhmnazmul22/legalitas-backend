@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Select,
   SelectContent,
@@ -20,6 +18,7 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { redirect } from "next/navigation";
+import CKEditorWrapper from "@/components/CKEditorWrapper";
 
 export default function AddArticlePage() {
   const { items } = useSelector((state: RootState) => state.blog);
@@ -140,43 +139,7 @@ export default function AddArticlePage() {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="content">Contents</Label>
-          <div className="editor border border-gray-300 rounded-md overflow-hidden">
-            <CKEditor
-              editor={ClassicEditor as any}
-              data={content}
-              onChange={(_, editor) => {
-                const html = editor.getData();
-                setContent(html);
-              }}
-              config={{
-                toolbar: [
-                  "heading",
-                  "|",
-                  "bold",
-                  "italic",
-                  "link",
-                  "bulletedList",
-                  "numberedList",
-                  "|",
-                  "blockQuote",
-                  "insertTable",
-                  "undo",
-                  "redo",
-                ],
-                ui: {
-                  viewportOffset: { top: 20 },
-                },
-              }}
-            />
-          </div>
-          <style jsx global>{`
-            .ck-editor__editable {
-              min-height: 400px !important;
-            }
-          `}</style>
-        </div>
+        <CKEditorWrapper content={content} setContent={setContent} />
 
         {/* Category */}
         <div className="flex flex-col gap-2">
