@@ -65,16 +65,31 @@ export async function PUT(
     }
 
     // if user try to update password
-    let hashedPassword = null;
-    if (
-      updateData["password"] &&
-      updateData["confirmPassword"] &&
-      updateData["password"] === updateData["confirmPassword"]
-    ) {
+    if (updateData["password"] && updateData["currentPassword"]) {
+      const isPasswordRight = bcrypt.compare(
+        updateData["currenPassword"],
+        user.password
+      );
+
+      if (!isPasswordRight) {
+        return NextResponse.json(
+          {
+            status: "Failed",
+            message: "Please, Insert the right current password",
+          },
+          {
+            status: 400,
+            headers: headers,
+          }
+        );
+      }
+
       // hashed the password with bcrypt
-      hashedPassword = await bcrypt.hash(updateData["password"], 10);
+      let hashedPassword = await bcrypt.hash(updateData["password"], 10);
       updateData["password"] = hashedPassword;
     }
+
+   
 
     const updatedUser = await UserModel.findByIdAndUpdate(userId, updateData, {
       new: true,
