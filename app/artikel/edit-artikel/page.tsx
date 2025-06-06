@@ -63,6 +63,19 @@ export default function AddArticlePage() {
       setLoading(true);
       let imageUrl = (data && data.thumbnail) || "";
 
+      if (thumbnailFile) {
+        const formData = new FormData();
+        formData.append("file", thumbnailFile);
+
+        const res = await fetch("/api/uploads", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        imageUrl = data.url;
+      }
+
       const blogData = {
         title,
         shortDes,
@@ -154,8 +167,8 @@ export default function AddArticlePage() {
             </SelectTrigger>
             <SelectContent>
               {services.map((item) => (
-                <SelectItem key={item.id} value={item.value}>
-                  {item.title}
+                <SelectItem key={item.id} value={item.name}>
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -179,7 +192,7 @@ export default function AddArticlePage() {
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? "Submitting..." : "Submit Blog"}
+          {loading ? "Updating..." : "Updated Blog"}
         </button>
       </div>
     </div>

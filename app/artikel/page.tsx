@@ -16,14 +16,16 @@ import api from "@/lib/config/axios";
 import { toast } from "sonner";
 import { BlogType } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
 import { redirect } from "next/navigation";
 import { fetchBlogById } from "@/store/blogSlice";
+import DynamicPagination from "@/components/DynamicPagination";
 
 export default function BlogListPage() {
   const dispatch = useDispatch<AppDispatch>();
-
+  const { currentItems } = useSelector((state: RootState) => state.pagination);
+  console.log(currentItems);
   const [blogs, setBlogs] = useState<BlogType[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -91,8 +93,8 @@ export default function BlogListPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {blogs &&
-              blogs.map((post, index) => (
+            {currentItems &&
+              currentItems.map((post, index) => (
                 <TableRow key={post._id}>
                   <TableCell className="text-center font-medium">
                     {index + 1}
@@ -124,7 +126,7 @@ export default function BlogListPage() {
                   </TableCell>
                 </TableRow>
               ))}
-            {blogs.length === 0 && (
+            {currentItems.length === 0 && (
               <TableRow>
                 <TableCell
                   colSpan={5}
@@ -136,6 +138,9 @@ export default function BlogListPage() {
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="mt-5">
+        <DynamicPagination data={blogs} />
       </div>
     </div>
   );

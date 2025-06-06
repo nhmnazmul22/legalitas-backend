@@ -152,8 +152,8 @@ export default function AddArticlePage() {
             </SelectTrigger>
             <SelectContent>
               {services.map((item) => (
-                <SelectItem key={item.id} value={item.value}>
-                  {item.title}
+                <SelectItem key={item.id} value={item.name}>
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -177,7 +177,7 @@ export default function AddArticlePage() {
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           disabled={loading}
         >
-          Submit Blog
+          {loading ? "Submitting..." : "Submit Blog"}
         </button>
       </div>
     </div>

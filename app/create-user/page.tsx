@@ -90,7 +90,6 @@ export default function CreateUserPage() {
         whatsappNumber: proposal.clientWhatsAppNumber,
         service: proposal.proposalDetails.name,
       }));
-      console.log(proposal);
     }
   }, []);
 
