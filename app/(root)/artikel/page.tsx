@@ -31,7 +31,7 @@ export default function BlogListPage() {
   const deleteBlogs = async (blogId: string) => {
     try {
       setLoading(true);
-      const res = await api.delete(`/api/blogs/${blogId}`);
+      const res = await api.delete(`/api/artikel/${blogId}`);
       if (res.status === 201) {
         toast.success("Blog delete Successful");
       }

@@ -24,10 +24,10 @@ const initialState: StateType = {
 
 // ✅ Async thunk to fetch blog by ID
 export const fetchBlogById = createAsyncThunk(
-  "blog/fetchBlogById",
+  "artikel/fetchBlogById",
   async (id: string, thunkAPI) => {
     try {
-      const res = await fetch(`/api/blogs/${id}`);
+      const res = await fetch(`/api/artikel/${id}`);
 
       if (!res.ok) {
         const error = await res.json();
@@ -43,7 +43,7 @@ export const fetchBlogById = createAsyncThunk(
 );
 
 const BlogSlice = createSlice({
-  name: "blog",
+  name: "artikel",
   initialState,
   reducers: {
     clearBlog: (state) => {
