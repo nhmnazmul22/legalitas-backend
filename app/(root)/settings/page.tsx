@@ -1,26 +1,57 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Save, Mail, MessageSquare, Bell, Shield, Database, Palette } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Save,
+  Mail,
+  MessageSquare,
+  Bell,
+  Shield,
+  Database,
+  Palette,
+  User,
+  CircleUser,
+  Facebook,
+  Twitter,
+  Instagram,
+  Building,
+} from "lucide-react";
+import Image from "next/image";
+import AdminInfo from "@/components/AdminInfo";
 
 export default function SettingsPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Pengaturan</h1>
-        <p className="text-muted-foreground">Kelola pengaturan sistem admin panel</p>
+        <p className="text-muted-foreground">
+          Kelola pengaturan sistem admin panel
+        </p>
       </div>
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="general">Umum</TabsTrigger>
+          <TabsTrigger value="adminInfo">Admin Info</TabsTrigger>
           <TabsTrigger value="notifications">Notifikasi</TabsTrigger>
           <TabsTrigger value="email">Email</TabsTrigger>
           <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
@@ -35,7 +66,9 @@ export default function SettingsPage() {
                 <Palette className="w-5 h-5" />
                 Pengaturan Umum
               </CardTitle>
-              <CardDescription>Konfigurasi dasar sistem admin panel</CardDescription>
+              <CardDescription>
+                Konfigurasi dasar sistem admin panel
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -44,7 +77,11 @@ export default function SettingsPage() {
               </div>
               <div>
                 <Label htmlFor="company-address">Alamat Perusahaan</Label>
-                <Textarea id="company-address" defaultValue="Jakarta, Indonesia" rows={3} />
+                <Textarea
+                  id="company-address"
+                  defaultValue="Jakarta, Indonesia"
+                  rows={3}
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -53,7 +90,10 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <Label htmlFor="company-email">Email</Label>
-                  <Input id="company-email" defaultValue="admin@legalitas.org" />
+                  <Input
+                    id="company-email"
+                    defaultValue="admin@legalitas.org"
+                  />
                 </div>
               </div>
               <div>
@@ -77,6 +117,52 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="adminInfo" className="space-y-6">
+          <AdminInfo />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building className="w-8 h-8" />
+                Admin Bank Info
+              </CardTitle>
+              <CardDescription>Add admin bank info payments</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="bank-name">
+                  Nama Bank <span className="text-destructive">*</span>
+                </Label>
+                <Input id="bank-name" placeholder="National bank Ltd." />
+              </div>
+              <div>
+                <Label htmlFor="bank-account-no">
+                  Account No. <span className="text-destructive">*</span>
+                </Label>
+                <Input id="bank-account-no" placeholder="548624496254" />
+              </div>
+              <div>
+                <Label htmlFor="bank-holder">
+                  Holder Name <span className="text-destructive">*</span>
+                </Label>
+                <Input id="bank-holder" placeholder="Mr. Holder" />
+              </div>
+              <div>
+                <Label htmlFor="bank-address">Bank Address</Label>
+                <Textarea
+                  id="bank-address"
+                  placeholder="Jakarta, Indonesia"
+                  rows={3}
+                />
+              </div>
+
+              <Button>
+                <Save className="w-4 h-4 mr-2" />
+                Simpan Info
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="notifications" className="space-y-6">
           <Card>
             <CardHeader>
@@ -84,34 +170,44 @@ export default function SettingsPage() {
                 <Bell className="w-5 h-5" />
                 Pengaturan Notifikasi
               </CardTitle>
-              <CardDescription>Atur kapan dan bagaimana notifikasi dikirim</CardDescription>
+              <CardDescription>
+                Atur kapan dan bagaimana notifikasi dikirim
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Notifikasi Proposal Baru</Label>
-                  <p className="text-sm text-muted-foreground">Terima notifikasi saat ada permintaan proposal baru</p>
+                  <p className="text-sm text-muted-foreground">
+                    Terima notifikasi saat ada permintaan proposal baru
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Notifikasi Pembayaran</Label>
-                  <p className="text-sm text-muted-foreground">Terima notifikasi saat ada pembayaran invoice</p>
+                  <p className="text-sm text-muted-foreground">
+                    Terima notifikasi saat ada pembayaran invoice
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Notifikasi Progress Update</Label>
-                  <p className="text-sm text-muted-foreground">Kirim notifikasi ke klien saat progress diupdate</p>
+                  <p className="text-sm text-muted-foreground">
+                    Kirim notifikasi ke klien saat progress diupdate
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Notifikasi Invoice Overdue</Label>
-                  <p className="text-sm text-muted-foreground">Kirim reminder untuk invoice yang terlambat</p>
+                  <p className="text-sm text-muted-foreground">
+                    Kirim reminder untuk invoice yang terlambat
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -130,7 +226,9 @@ export default function SettingsPage() {
                 <Mail className="w-5 h-5" />
                 Pengaturan Email
               </CardTitle>
-              <CardDescription>Konfigurasi SMTP untuk pengiriman email</CardDescription>
+              <CardDescription>
+                Konfigurasi SMTP untuk pengiriman email
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -150,7 +248,11 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <Label htmlFor="smtp-password">Password</Label>
-                  <Input id="smtp-password" type="password" placeholder="••••••••" />
+                  <Input
+                    id="smtp-password"
+                    type="password"
+                    placeholder="••••••••"
+                  />
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -188,16 +290,25 @@ Tim Legalitas.org"
                 <MessageSquare className="w-5 h-5" />
                 Pengaturan WhatsApp
               </CardTitle>
-              <CardDescription>Konfigurasi WhatsApp API untuk notifikasi</CardDescription>
+              <CardDescription>
+                Konfigurasi WhatsApp API untuk notifikasi
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="wa-api-url">WhatsApp API URL</Label>
-                <Input id="wa-api-url" placeholder="https://api.whatsapp.com/..." />
+                <Input
+                  id="wa-api-url"
+                  placeholder="https://api.whatsapp.com/..."
+                />
               </div>
               <div>
                 <Label htmlFor="wa-token">API Token</Label>
-                <Input id="wa-token" type="password" placeholder="••••••••••••••••" />
+                <Input
+                  id="wa-token"
+                  type="password"
+                  placeholder="••••••••••••••••"
+                />
               </div>
               <div>
                 <Label htmlFor="wa-phone">Nomor WhatsApp Business</Label>
@@ -232,13 +343,17 @@ Terima kasih,
                 <Shield className="w-5 h-5" />
                 Pengaturan Keamanan
               </CardTitle>
-              <CardDescription>Konfigurasi keamanan sistem admin</CardDescription>
+              <CardDescription>
+                Konfigurasi keamanan sistem admin
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Two-Factor Authentication</Label>
-                  <p className="text-sm text-muted-foreground">Aktifkan 2FA untuk keamanan tambahan</p>
+                  <p className="text-sm text-muted-foreground">
+                    Aktifkan 2FA untuk keamanan tambahan
+                  </p>
                 </div>
                 <Switch />
               </div>
@@ -247,13 +362,17 @@ Terima kasih,
                 <Input id="session-timeout" type="number" defaultValue="60" />
               </div>
               <div>
-                <Label htmlFor="max-login-attempts">Maksimal Percobaan Login</Label>
+                <Label htmlFor="max-login-attempts">
+                  Maksimal Percobaan Login
+                </Label>
                 <Input id="max-login-attempts" type="number" defaultValue="5" />
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Auto Logout</Label>
-                  <p className="text-sm text-muted-foreground">Logout otomatis saat tidak aktif</p>
+                  <p className="text-sm text-muted-foreground">
+                    Logout otomatis saat tidak aktif
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -272,13 +391,17 @@ Terima kasih,
                 <Database className="w-5 h-5" />
                 Pengaturan Backup
               </CardTitle>
-              <CardDescription>Konfigurasi backup otomatis data</CardDescription>
+              <CardDescription>
+                Konfigurasi backup otomatis data
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Backup Otomatis</Label>
-                  <p className="text-sm text-muted-foreground">Aktifkan backup otomatis harian</p>
+                  <p className="text-sm text-muted-foreground">
+                    Aktifkan backup otomatis harian
+                  </p>
                 </div>
                 <Switch defaultChecked />
               </div>
@@ -318,5 +441,5 @@ Terima kasih,
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

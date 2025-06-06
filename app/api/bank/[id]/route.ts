@@ -1,7 +1,6 @@
 import { dbConnect } from "@/lib/config/db";
-import BlogModel from "@/lib/models/BlogModel";
+import BankModel from "@/lib/models/BankModel";
 import { getCorsHeaders } from "@/lib/utils";
-import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 // Load Database
@@ -19,40 +18,21 @@ export async function OPTIONS(request: Request) {
   });
 }
 
-// Get Blogs By id
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const headers = getCorsHeaders(request);
-  const blogId = (await params).id;
+  const bankId = (await params).id;
 
   try {
-    const blog = await BlogModel.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(blogId) } },
-      {
-        $lookup: {
-          from: "authors",
-          localField: "authorId",
-          foreignField: "_id",
-          as: "authorDetails",
-        },
-      },
-      {
-        $unwind: "$authorDetails",
-      },
-      {
-        $project: {
-          authorId: 0,
-        },
-      },
-    ]);
+    const bankInfo = await BankModel.findById(bankId);
 
-    if (!blog) {
+    if (!bankInfo) {
       return NextResponse.json(
         {
           status: "Failed",
-          message: "Blog not found",
+          message: "Bank info not found",
         },
         {
           status: 404,
@@ -62,7 +42,7 @@ export async function GET(
     }
 
     return NextResponse.json(
-      { status: "Successful", data: blog[0] },
+      { status: "Successful", data: bankInfo },
       {
         status: 200,
         headers,
@@ -83,10 +63,10 @@ export async function GET(
 }
 
 // Update Blog
-export const PUT = async (
+export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
-) => {
+) {
   const headers = getCorsHeaders(request);
   const blogId = (await params).id;
   try {
@@ -105,12 +85,12 @@ export const PUT = async (
       );
     }
 
-    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, body, {
+    const updatedBank = await BankModel.findByIdAndUpdate(blogId, body, {
       new: true,
     });
 
     return NextResponse.json(
-      { status: "Successful", data: updatedBlog },
+      { status: "Successful", data: updatedBank },
       {
         status: 201,
         headers: headers,
@@ -125,44 +105,4 @@ export const PUT = async (
       }
     );
   }
-};
-
-// Update Blog
-export const DELETE = async (
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) => {
-  const headers = getCorsHeaders(request);
-  const blogId = (await params).id;
-  try {
-    const deleteBlog = await BlogModel.findByIdAndDelete(blogId);
-    if (!deleteBlog) {
-      return NextResponse.json(
-        {
-          status: "Failed",
-          message: "Blog Delete failed",
-        },
-        {
-          status: 400,
-          headers: headers,
-        }
-      );
-    }
-
-    return NextResponse.json(
-      { status: "Successful", data: deleteBlog },
-      {
-        status: 201,
-        headers: headers,
-      }
-    );
-  } catch (err: any) {
-    return NextResponse.json(
-      { status: "Failed", message: err.toString() },
-      {
-        status: 500,
-        headers: headers,
-      }
-    );
-  }
-};
+}

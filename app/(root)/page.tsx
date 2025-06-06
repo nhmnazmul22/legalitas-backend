@@ -8,14 +8,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useFetch } from "@/hooks/useFetch";
+import { AppDispatch } from "@/store";
+import { fetchAdminByEmail } from "@/store/AdminSlice";
 import { RequestedProposal, UserType } from "@/types";
 import { Clock, FileText, Receipt, Users } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function AdminDashboard() {
   const { data: users } = useFetch<UserType[]>("api/users/get-user");
   const { data: proposals } = useFetch<RequestedProposal[]>(
     "api/proposals/request-proposal"
   );
+
+  const { data: session } = useSession();
+  const dispatch = useDispatch<AppDispatch>();
 
   const activeUser = users && users.filter((user) => user.status === "aktif");
   const newProposals =
@@ -75,6 +83,10 @@ export default function AdminDashboard() {
       date: "2024-01-13",
     },
   ];
+
+  useEffect(() => {
+    dispatch(fetchAdminByEmail(session?.user?.email || ""));
+  }, [session]);
 
   return (
     <div className="p-6 space-y-6">

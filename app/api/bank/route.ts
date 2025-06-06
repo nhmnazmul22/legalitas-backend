@@ -1,8 +1,8 @@
 import { dbConnect } from "@/lib/config/db";
-import AdminModel from "@/lib/models/AdminModel";
+import BankModel from "@/lib/models/BankModel";
 import { getCorsHeaders } from "@/lib/utils";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+
 // Load Database
 const LoadDataBase = () => {
   dbConnect();
@@ -10,22 +10,13 @@ const LoadDataBase = () => {
 
 LoadDataBase();
 
-export async function OPTIONS(request: Request) {
-  const headers = getCorsHeaders(request);
-  return new NextResponse(null, {
-    status: 204,
-    headers,
-  });
-}
-
-// Create Author
 export const POST = async (request: Request) => {
   const headers = getCorsHeaders(request);
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { bankName, accountNo, accountHolder } = body;
 
-    if (!email || !password) {
+    if (!bankName || !accountNo || !accountHolder) {
       return NextResponse.json(
         {
           status: "Failed",
@@ -37,14 +28,12 @@ export const POST = async (request: Request) => {
         }
       );
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const admin = await AdminModel.create({
+    const bankInfo = await BankModel.create({
       ...body,
-      password: hashedPassword,
     });
     return NextResponse.json(
-      { status: "Successful", data: admin },
+      { status: "Successful", data: bankInfo },
       {
         status: 201,
         headers: headers,

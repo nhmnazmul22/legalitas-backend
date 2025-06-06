@@ -1,15 +1,7 @@
-import { dbConnect } from "@/lib/config/db";
 import BlogModel from "@/lib/models/BlogModel";
 import { getCorsHeaders } from "@/lib/utils";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
-
-// Load Database
-const LoadDataBase = () => {
-  dbConnect();
-};
-
-LoadDataBase();
 
 export async function OPTIONS(request: Request) {
   const headers = getCorsHeaders(request);

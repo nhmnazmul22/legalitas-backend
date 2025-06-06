@@ -62,3 +62,26 @@ export interface RuleType {
   rule: string;
   description: string;
 }
+
+export interface AdminType {
+  authorName?: string;
+  bio?: string;
+  email?: string;
+  currentPassword?: string;
+  password?: string;
+  phone?: string;
+  like?: string;
+  profileImg?: string;
+  socialLinks?: {
+    facebookLink?: string;
+    twitterLink?: string;
+    instagramLink?: string;
+  };
+}
+
+export interface BankInfo {
+  bankName?: string;
+  accountNo?: string;
+  accountHolder?: string;
+  address?: string;
+}

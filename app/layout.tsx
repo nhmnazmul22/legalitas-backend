@@ -1,10 +1,6 @@
-import { AdminSidebar } from "@/components/admin-sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
 import { Poppins } from "next/font/google";
 import type React from "react";
 import "./globals.css";
-import StoreProvider from "@/context/StoreProvider";
 
 const poppinsSans = Poppins({
   variable: "--font-poppins",
@@ -19,15 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body className={`${poppinsSans.className} antialiased`}>
-        <SidebarProvider>
-          <AdminSidebar />
-          <main className="flex-1">
-            <StoreProvider>{children}</StoreProvider>
-          </main>
-          <Toaster />
-        </SidebarProvider>
-      </body>
+      <body className={`${poppinsSans.className} antialiased`}>{children}</body>
     </html>
   );
 }

@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib/config/db";
 import UserModel from "@/lib/models/UserModel";
 import { getCorsHeaders } from "@/lib/utils";
 import bcrypt from "bcrypt";
@@ -10,6 +11,13 @@ export async function OPTIONS(request: Request) {
     headers,
   });
 }
+
+// Load Database
+const LoadDataBase = () => {
+  dbConnect();
+};
+
+LoadDataBase();
 
 // User update and password update request
 export async function PUT(
@@ -67,7 +75,7 @@ export async function PUT(
     // if user try to update password
     if (updateData["password"] && updateData["currentPassword"]) {
       const isPasswordRight = bcrypt.compare(
-        updateData["currenPassword"],
+        updateData["currentPassword"],
         user.password
       );
 
@@ -88,8 +96,6 @@ export async function PUT(
       let hashedPassword = await bcrypt.hash(updateData["password"], 10);
       updateData["password"] = hashedPassword;
     }
-
-   
 
     const updatedUser = await UserModel.findByIdAndUpdate(userId, updateData, {
       new: true,

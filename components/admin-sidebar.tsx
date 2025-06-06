@@ -27,6 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { signOut } from "next-auth/react";
 
 const menuItems = [
   {
@@ -107,7 +108,11 @@ export function AdminSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4">
-        <Button variant="ghost" className="w-full justify-start">
+        <Button
+          variant="ghost"
+          className="w-full justify-start"
+          onClick={() => signOut({ callbackUrl: "/login" })}
+        >
           <LogOut className="w-4 h-4 mr-2" />
           Logout
         </Button>
