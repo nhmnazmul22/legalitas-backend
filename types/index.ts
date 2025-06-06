@@ -1,7 +1,6 @@
 export interface ServiceType {
   id: string;
-  title: string;
-  value: string;
+  name: string;
 }
 
 export interface UserType {

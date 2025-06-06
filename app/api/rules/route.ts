@@ -56,3 +56,41 @@ export const GET = async (request: Request) => {
     );
   }
 };
+
+export const POST = async (request: Request) => {
+  const headers = getCorsHeaders(request);
+  try {
+    const body = await request.json();
+    const { no, ruleCode, rule, description } = body;
+
+    if (!no || !ruleCode || !rule || !description) {
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "Missing required fields",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
+    }
+
+    const ruleData = await RulesModel.create({ ...body });
+    return NextResponse.json(
+      { status: "Successful", data: ruleData },
+      {
+        status: 201,
+        headers: headers,
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json(
+      { status: "Failed", message: err.toString() },
+      {
+        status: 500,
+        headers: headers,
+      }
+    );
+  }
+};

@@ -9,6 +9,8 @@ import {
   Settings,
   UserPlus,
   Users,
+  PencilRuler,
+  Scale,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -60,7 +62,12 @@ const menuItems = [
   {
     title: "Artikel",
     url: "/artikel",
-    icon: ClipboardList,
+    icon: PencilRuler,
+  },
+  {
+    title: "Rules",
+    url: "/rules",
+    icon: Scale,
   },
   {
     title: "Pengaturan",

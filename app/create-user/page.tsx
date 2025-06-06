@@ -88,8 +88,9 @@ export default function CreateUserPage() {
         fullName: proposal.clientName,
         email: proposal.clientEmail,
         whatsappNumber: proposal.clientWhatsAppNumber,
-        service: proposal.proposalDetails.category,
+        service: proposal.proposalDetails.name,
       }));
+      console.log(proposal);
     }
   }, []);
 
@@ -160,8 +161,8 @@ export default function CreateUserPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {services.map((item) => (
-                      <SelectItem key={item.id} value={item.value}>
-                        {item.title}
+                      <SelectItem key={item.id} value={item.name}>
+                        {item.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
