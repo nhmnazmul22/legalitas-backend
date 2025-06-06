@@ -33,5 +33,6 @@ export default function RootLayout({
 }
 
 export const metadata = {
-  generator: "v0.dev",
+  title: "Admin Panel | Mitra Jasa Legalitas Surabaya",
+  description: "Mitra Jasa Legalitas Surabaya",
 };

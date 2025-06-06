@@ -65,8 +65,8 @@ const menuItems = [
     icon: PencilRuler,
   },
   {
-    title: "Rules",
-    url: "/rules",
+    title: "KBLI",
+    url: "/kbli",
     icon: Scale,
   },
   {

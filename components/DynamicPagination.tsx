@@ -28,7 +28,7 @@ const DynamicPagination: React.FC<DynamicPaginationType> = ({ data }) => {
 
   useEffect(() => {
     dispatch(setCurrentItem(currentItems));
-  }, [dispatch, data]);
+  }, [dispatch, data, currentPage]);
 
   return (
     <Pagination className="mt-10">

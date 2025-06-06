@@ -17,11 +17,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Eye, UserPlus, Send } from "lucide-react";
+import { Eye, UserPlus } from "lucide-react";
 import { RequestedProposal } from "@/types";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setProposal } from "@/store/proposalSlice";
 import type { AppDispatch } from "@/store";
 export const ProposalCard: React.FC<RequestedProposal> = ({

@@ -25,7 +25,6 @@ import DynamicPagination from "@/components/DynamicPagination";
 export default function BlogListPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { currentItems } = useSelector((state: RootState) => state.pagination);
-  console.log(currentItems);
   const [blogs, setBlogs] = useState<BlogType[]>([]);
   const [loading, setLoading] = useState(false);
 

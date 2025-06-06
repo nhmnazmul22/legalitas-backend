@@ -54,3 +54,11 @@ export interface BlogType {
   comments?: CommentType[];
   createdAt?: string;
 }
+
+export interface RuleType {
+  _id?: string;
+  no: number | string;
+  ruleCode: string;
+  rule: string;
+  description: string;
+}
