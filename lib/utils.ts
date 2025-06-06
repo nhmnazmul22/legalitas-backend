@@ -21,6 +21,7 @@ export function getCorsHeaders(request: Request) {
   const headers: Record<string, string> = {
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400", // 1 day cache for preflight
   };
 
   if (origin && allowedOrigins.includes(origin)) {
