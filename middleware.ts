@@ -8,9 +8,13 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  const isAdminRoute = request.nextUrl.pathname.startsWith("/");
+  const isLoginPage = request.nextUrl.pathname === "/login";
+  const isPublicFile =
+    request.nextUrl.pathname.startsWith("/_next/") ||
+    request.nextUrl.pathname === "/favicon.ico";
 
-  if (isAdminRoute && !token) {
+  // Redirect to /login if not authenticated and not accessing a public route
+  if (!token && !isLoginPage && !isPublicFile) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
@@ -19,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/admin/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

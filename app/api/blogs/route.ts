@@ -75,7 +75,7 @@ export const GET = async (request: Request) => {
     const blogs = await BlogModel.aggregate([
       {
         $lookup: {
-          from: "authors",
+          from: "admins",
           localField: "authorId",
           foreignField: "_id",
           as: "authorDetails",
