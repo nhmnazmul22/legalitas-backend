@@ -26,6 +26,7 @@ export const authOptions: NextAuthOptions = {
           const response = await api.get<Admin>(
             `/api/author/${credentials.email}`
           );
+
           const admin = response.data.data;
           const isPassword = await bcrypt.compare(
             credentials?.password,

@@ -27,10 +27,7 @@ export async function GET(
   const authorEmail = (await params).email;
 
   try {
-    const author = await AdminModel.findOne(
-      { email: authorEmail },
-      { password: 0 }
-    );
+    const author = await AdminModel.findOne({ email: authorEmail });
 
     if (!author) {
       return NextResponse.json(
