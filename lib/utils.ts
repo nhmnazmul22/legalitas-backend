@@ -13,6 +13,7 @@ export const formatDate = (date: string) => {
 const allowedOrigins = [
   "http://localhost:3001",
   "https://legalitas.vercel.app",
+  "http://202.74.74.123",
 ];
 
 export function getCorsHeaders(request: Request) {
@@ -29,7 +30,7 @@ export function getCorsHeaders(request: Request) {
   return headers;
 }
 
-export function truncateText(text:string, maxLength: number) {
+export function truncateText(text: string, maxLength: number) {
   if (typeof text !== "string") return "";
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + "...";

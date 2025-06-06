@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
           const admin = response.data.data;
           const isPassword = await bcrypt.compare(
             credentials?.password,
-            admin.password
+            admin.password!
           );
 
           if (credentials.email === admin.email && isPassword) {
