@@ -85,7 +85,7 @@ export default function AddArticlePage() {
         thumbnail: imageUrl,
       };
 
-      const res = await api.put(`/api/blogs/${data._id!}`, blogData);
+      const res = await api.put(`/api/artikel/${data._id!}`, blogData);
       if (res.status === 201) {
         toast.success("Blog Updated Successfully");
         resetInfo();

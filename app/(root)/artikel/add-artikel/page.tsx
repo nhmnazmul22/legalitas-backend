@@ -69,7 +69,7 @@ export default function AddArticlePage() {
         authorId: "6841e0fccf78d430c5d0f8ac",
       };
 
-      const res = await api.post("/api/blogs", blogData);
+      const res = await api.post("/api/artikel", blogData);
       if (res.status === 201) {
         toast.success("Blog Create Successful");
         resetInfo();
