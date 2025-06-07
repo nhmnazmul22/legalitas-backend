@@ -54,7 +54,7 @@ export default function BlogListPage() {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const res = await api.get("/api/blogs");
+        const res = await api.get("/api/artikel");
         if (res.status === 200) {
           setBlogs(res.data.data);
         }
