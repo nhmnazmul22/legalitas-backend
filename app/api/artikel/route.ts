@@ -1,4 +1,5 @@
 import { dbConnect } from "@/lib/config/db";
+import AdminModel from "@/lib/models/AdminModel";
 import BlogModel from "@/lib/models/BlogModel";
 import { getCorsHeaders } from "@/lib/utils";
 import { NextResponse } from "next/server";
@@ -27,15 +28,7 @@ export const POST = async (request: Request) => {
     const { title, thumbnail, shortDes, content, tags, category, authorId } =
       body;
 
-    if (
-      !title ||
-      !thumbnail ||
-      !shortDes ||
-      !content ||
-      !tags ||
-      !category ||
-      !authorId
-    ) {
+    if (!title || !thumbnail || !shortDes || !content || !tags || !category) {
       return NextResponse.json(
         {
           status: "Failed",
@@ -48,7 +41,23 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const blog = await BlogModel.create({ ...body });
+    const author = await AdminModel.find({});
+
+    if (!author[0]._id) {
+      return NextResponse.json(
+        {
+          status: "Failed",
+          message: "Author not found",
+        },
+        {
+          status: 400,
+          headers: headers,
+        }
+      );
+    }
+
+    const blog = await BlogModel.create({ ...body, authorId: author[0]._id });
+    
     return NextResponse.json(
       { status: "Successful", data: blog },
       {

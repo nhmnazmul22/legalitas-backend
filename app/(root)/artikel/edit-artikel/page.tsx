@@ -192,7 +192,7 @@ export default function AddArticlePage() {
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? "Updating..." : "Updated Blog"}
+          {loading ? "Updating Blog..." : "Updated Blog"}
         </button>
       </div>
     </div>

@@ -1,6 +1,5 @@
 "use client";
 import dynamic from "next/dynamic";
-
 import { useState } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -59,6 +58,11 @@ export default function AddArticlePage() {
         imageUrl = data.url;
       }
 
+      if (!title || !shortDes || !tags || !category || !content || !imageUrl) {
+        toast.error("Missing Required field");
+        return;
+      }
+
       const blogData = {
         title,
         shortDes,
@@ -66,7 +70,6 @@ export default function AddArticlePage() {
         category,
         content: content,
         thumbnail: imageUrl,
-        authorId: "6841e0fccf78d430c5d0f8ac",
       };
 
       const res = await api.post("/api/artikel", blogData);
@@ -113,14 +116,17 @@ export default function AddArticlePage() {
               }}
             />
             <p className="text-muted-foreground text-xs mt-1 text-center">
-              Accepts .png .jpg .jpeg .svg only
+              Accepts .png .jpg .jpeg .svg only{" "}
+              <span className="text-destructive">*</span>
             </p>
           </div>
         </div>
 
         {/* Title */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title">
+            Title <span className="text-destructive">*</span>
+          </Label>
           <Input
             id="title"
             value={title}
@@ -131,7 +137,9 @@ export default function AddArticlePage() {
 
         {/* Short Description */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="shortDes">Short Description</Label>
+          <Label htmlFor="shortDes">
+            Short Description <span className="text-destructive">*</span>
+          </Label>
           <Textarea
             id="shortDes"
             value={shortDes}
@@ -145,7 +153,9 @@ export default function AddArticlePage() {
 
         {/* Category */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">
+            Category <span className="text-destructive">*</span>
+          </Label>
           <Select onValueChange={setCategory} value={category}>
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
@@ -162,7 +172,9 @@ export default function AddArticlePage() {
 
         {/* Tags */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="tags">Insert Tags</Label>
+          <Label htmlFor="tags">
+            Insert Tags<span className="text-destructive">*</span>
+          </Label>
           <Input
             id="tags"
             value={tags}
@@ -177,7 +189,7 @@ export default function AddArticlePage() {
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? "Submitting..." : "Submit Blog"}
+          {loading ? "Creating Blog..." : "Create Blog"}
         </button>
       </div>
     </div>
