@@ -67,6 +67,12 @@ export default function AddArticlePage() {
         const formData = new FormData();
         formData.append("file", thumbnailFile);
 
+        const imgName = imageUrl.split("/")[2];
+        // Delete the pervious img
+        await fetch(`/api/delete-image?filename=${imgName}`, {
+          method: "DELETE",
+        });
+
         const res = await fetch("/api/uploads", {
           method: "POST",
           body: formData,
@@ -101,7 +107,7 @@ export default function AddArticlePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold tracking-tight mb-6">Add Artikel</h1>
+      <h1 className="text-3xl font-bold tracking-tight mb-6">Edit Artikel</h1>
 
       <div className="border rounded-lg bg-white p-5 shadow-sm flex flex-col gap-5">
         {/* Thumbnail Upload */}

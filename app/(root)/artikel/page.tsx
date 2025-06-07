@@ -28,11 +28,34 @@ export default function BlogListPage() {
   const [blogs, setBlogs] = useState<BlogType[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/api/artikel");
+      if (res.status === 200) {
+        setBlogs(res.data.data);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteBlogs = async (blogId: string) => {
     try {
       setLoading(true);
       const res = await api.delete(`/api/artikel/${blogId}`);
       if (res.status === 201) {
+        // Delete the pervious img
+        const { data } = res.data;
+        const imgName = data.thumbnail.split("/")[2];
+        await fetch(`/api/delete-image?filename=${imgName}`, {
+          method: "DELETE",
+        });
+
+        fetchBlogs();
         toast.success("Blog delete Successful");
       }
     } catch (err) {
@@ -51,20 +74,6 @@ export default function BlogListPage() {
   };
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get("/api/artikel");
-        if (res.status === 200) {
-          setBlogs(res.data.data);
-        }
-      } catch (err) {
-        console.error(err);
-        toast.error("Something went wrong!!");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchBlogs();
   }, []);
 

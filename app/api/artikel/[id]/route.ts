@@ -32,7 +32,7 @@ export async function GET(
       { $match: { _id: new mongoose.Types.ObjectId(blogId) } },
       {
         $lookup: {
-          from: "authors",
+          from: "admins",
           localField: "authorId",
           foreignField: "_id",
           as: "authorDetails",
@@ -48,7 +48,7 @@ export async function GET(
       },
     ]);
 
-    if (!blog) {
+    if (blog.length === 0) {
       return NextResponse.json(
         {
           status: "Failed",
