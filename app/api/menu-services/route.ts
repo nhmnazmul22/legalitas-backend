@@ -23,18 +23,6 @@ export async function OPTIONS(request: Request) {
 export const GET = async (request: NextRequest) => {
   const headers = getCorsHeaders(request);
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    if (!token) {
-      return NextResponse.json(
-        { error: "Unauthorized: Please login." },
-        { status: 401, headers }
-      );
-    }
-
     const menuServices = await MenuServicesModel.findOne();
 
     if (menuServices) {
@@ -60,7 +48,7 @@ export const GET = async (request: NextRequest) => {
         headers: headers,
       }
     );
-    
+
   } catch (err: any) {
     return NextResponse.json(
       { status: "Failed", message: err.toString() },
