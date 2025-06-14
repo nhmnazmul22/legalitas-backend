@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 interface ServiceItem {
   _id?: string;
@@ -219,12 +220,10 @@ export default function ServiceManagement() {
       if (result.servicesWithBanner?.children) {
         setBannerMenuItems(result.servicesWithBanner.children);
       }
-
-      console.log("Data updated successfully:", result);
-      alert("All data updated successfully!");
+      toast.success("All data updated successfully!");
     } catch (error) {
       console.error("Error updating data:", error);
-      alert("Error updating data. Please try again.");
+      toast.error("Error updating data. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -311,20 +310,6 @@ export default function ServiceManagement() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button
-                onClick={() => {
-                  setEditingCategory({
-                    title: "",
-                    children: [],
-                  });
-                  setIsCategoryDialogOpen(true);
-                }}
-                className="w-full"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add New Category
-              </Button>
-
               <div className="space-y-4">
                 {categories.map((category) => {
                   const isExpanded = expandedCategories.has(category._id!);
