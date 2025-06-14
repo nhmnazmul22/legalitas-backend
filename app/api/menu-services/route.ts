@@ -22,8 +22,8 @@ export const GET = async (request: NextRequest) => {
   const headers = getCorsHeaders(request);
   try {
     const menuServices = await MenuServicesModel.findOne({});
-
-    if (menuServices) {
+    console.log(menuServices);
+    if (!menuServices) {
       return NextResponse.json(
         {
           status: "Failed",
@@ -46,7 +46,6 @@ export const GET = async (request: NextRequest) => {
         headers: headers,
       }
     );
-
   } catch (err: any) {
     return NextResponse.json(
       { status: "Failed", message: err.toString() },
