@@ -52,3 +52,18 @@ export function convertMb(bytes: number) {
   }
   return fileSize;
 }
+
+export function deleteItemById(data: any[], targetId: string): any[] {
+  return data
+    .map((item) => {
+      if (item.id === targetId) return null;
+
+      if (item.children && Array.isArray(item.children)) {
+        const updatedChildren = deleteItemById(item.children, targetId);
+        return { ...item, children: updatedChildren };
+      }
+
+      return item;
+    })
+    .filter(Boolean);
+}

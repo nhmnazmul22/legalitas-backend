@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Building, Save } from "lucide-react";
+import { Building, Edit, Save, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
@@ -30,26 +30,89 @@ const BankInfo = () => {
   const [accountNo, setAccountNo] = useState("");
   const [accountHolder, setAccountHolder] = useState("");
   const [bankAddress, setBankAddress] = useState("");
+  const [bankId, setBankId] = useState("");
+  const [mode, setMode] = useState("add");
   const [loading, setLoading] = useState(false);
 
+  const reset = () => {
+    setBankName("");
+    setAccountNo("");
+    setAccountHolder("");
+    setBankAddress("");
+    setBankId("");
+    setMode("add");
+  };
+
   const saveBankInfo = async () => {
-    console.log("I am calling");
     try {
       setLoading(true);
-      const res = await api.post("/api/bank", {
-        bankName,
-        accountNo,
-        accountHolder,
-        address: bankAddress,
-      });
+      let res: any = {};
+      if (mode === "edit") {
+        res = await api.put(`/api/bank/${bankId}`, {
+          bankName,
+          accountNo,
+          accountHolder,
+          address: bankAddress,
+        });
+      } else {
+        res = await api.post("/api/bank", {
+          bankName,
+          accountNo,
+          accountHolder,
+          address: bankAddress,
+        });
+      }
       if (res.status === 201) {
-        toast.success("Bank info added successful");
+        toast.success(
+          `Bank info ${mode === "edit" ? "updated" : "added"} successful`
+        );
         dispatch(setBanks(res.data.data));
         dispatch(fetchBanks());
+        reset();
       }
     } catch (err) {
       console.error(err);
-      toast.error("Filed to adding bank info");
+      toast.error(
+        `Filed to ${mode === "edit" ? "updating" : "adding"} bank info`
+      );
+    } finally {
+      setLoading(false);
+      reset();
+    }
+  };
+
+  const deleteBank = async (bankId: string) => {
+    try {
+      setLoading(true);
+      const res = await api.delete(`/api/bank/${bankId}`);
+      if (res.status === 200 || res.status === 201) {
+        toast.success("Bank Delete Successful");
+        dispatch(fetchBanks());
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error("Bank delete failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addEditInfo = async (bankId: string) => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/api/bank/${bankId}`);
+      if (res.status === 200 || res.status === 201) {
+        const data = res.data.data;
+        setBankName(data.bankName);
+        setAccountNo(data.accountNo);
+        setAccountHolder(data.accountHolder);
+        setBankAddress(data.bankAddress);
+        setBankId(String(bankId));
+        setMode("edit");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error("Bank fetch failed");
     } finally {
       setLoading(false);
     }
@@ -125,9 +188,27 @@ const BankInfo = () => {
           {banks.map((info) => (
             <div
               key={info.accountNo}
-              className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(33.33%-0.5rem)] bg-white shadow-md rounded-xl p-4 border border-gray-200"
+              className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(33.33%-0.5rem)] bg-white shadow-md rounded-xl p-4 border border-gray-200 relative"
             >
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <div className="flex justify-end gap-2 absolute right-[10px]">
+                <Button
+                  variant="outline"
+                  className="w-5 h-10"
+                  onClick={() => addEditInfo(String(info._id!))}
+                  disabled={loading}
+                >
+                  <Edit />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-5 h-10"
+                  onClick={() => deleteBank(String(info._id!))}
+                  disabled={loading}
+                >
+                  <Trash />
+                </Button>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2 max-w-[85%]">
                 {info.bankName}
               </h3>
               <p className="text-sm text-gray-600">

@@ -12,6 +12,8 @@ import {
   PencilRuler,
   Scale,
   File,
+  TicketCheck,
+  Menu,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -62,6 +64,11 @@ const menuItems = [
     icon: ClipboardList,
   },
   {
+    title: "Menu Services",
+    url: "/menu-services",
+    icon: Menu,
+  },
+  {
     title: "Legality Vault",
     url: "/legality-vault",
     icon: File,
@@ -70,6 +77,11 @@ const menuItems = [
     title: "Artikel",
     url: "/artikel",
     icon: PencilRuler,
+  },
+  {
+    title: "Voucher Details",
+    url: "/voucher-details",
+    icon: TicketCheck,
   },
   {
     title: "KBLI",
