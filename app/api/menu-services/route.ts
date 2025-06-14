@@ -1,8 +1,6 @@
 import { dbConnect } from "@/lib/config/db";
-import InvoiceModel from "@/lib/models/InvoiceModel";
 import MenuServicesModel from "@/lib/models/ServiceMenuModel";
-import { getCorsHeaders, generateInvoiceNumber } from "@/lib/utils";
-import { getToken } from "next-auth/jwt";
+import { getCorsHeaders } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 // Load Database
@@ -23,7 +21,7 @@ export async function OPTIONS(request: Request) {
 export const GET = async (request: NextRequest) => {
   const headers = getCorsHeaders(request);
   try {
-    const menuServices = await MenuServicesModel.findOne();
+    const menuServices = await MenuServicesModel.findOne({});
 
     if (menuServices) {
       return NextResponse.json(
