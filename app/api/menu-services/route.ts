@@ -22,7 +22,6 @@ export const GET = async (request: NextRequest) => {
   const headers = getCorsHeaders(request);
   try {
     const menuServices = await MenuServicesModel.findOne({});
-    console.log(menuServices);
     if (!menuServices) {
       return NextResponse.json(
         {

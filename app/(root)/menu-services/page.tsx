@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Plus,
   Trash2,
@@ -31,159 +31,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 interface ServiceItem {
-  id: string;
+  _id?: string;
   title: string;
   link: string;
 }
 
 interface ServiceCategory {
-  id: string;
+  _id?: string;
   title: string;
   children: ServiceItem[];
 }
 
 interface MenuItemsWithBanner {
-  id: string;
+  _id?: string;
   menuName: string;
   bannerImg: string;
   link: string;
 }
 
 export default function ServiceManagement() {
-  const [categories, setCategories] = useState<ServiceCategory[]>([
-    {
-      id: "2-1",
-      title: "Badan Usaha",
-      children: [
-        {
-          id: "2-1-1",
-          title: "PT / Perseroan Terbatas",
-          link: "/layanan/perseroan-terbatas",
-        },
-        {
-          id: "2-1-2",
-          title: "CV / Commanditaire Veidotschap",
-          link: "/layanan/cv",
-        },
-        {
-          id: "2-1-3",
-          title: "PT Perorangan",
-          link: "/layanan/perseroan-perorangan",
-        },
-        { id: "2-1-4", title: "PT PMA", link: "/layanan/pma-penanaman" },
-        { id: "2-1-5", title: "Firma", link: "/layanan/firma" },
-        {
-          id: "2-1-6",
-          title: "Persekutuan Perdata",
-          link: "/layanan/persekutuan-perdata",
-        },
-        { id: "2-1-7", title: "Perkumpulan", link: "/layanan/perkumpulan" },
-        { id: "2-1-8", title: "Yayasan", link: "/layanan/yayasan" },
-      ],
-    },
-    {
-      id: "2-2",
-      title: "Perizinan",
-      children: [
-        { id: "2-2-1", title: "NIB & OSS", link: "/layanan/jasa-nib-oss" },
-        {
-          id: "2-2-2",
-          title: "Izin PKP",
-          link: "/layanan/pengusaha-kena-pajak",
-        },
-        { id: "2-2-3", title: "Izin Restoran", link: "/layanan/izin-restoran" },
-        {
-          id: "2-2-4",
-          title: "Izin Konstruksi",
-          link: "/layanan/izin-konstruksi",
-        },
-        { id: "2-2-5", title: "Izin PSE", link: "/layanan/izin-pse" },
-        { id: "2-2-6", title: "Izin K3L", link: "/layanan/registrasi-k3l" },
-        { id: "2-2-7", title: "Izin Yayasan", link: "/layanan/yayasan" },
-        { id: "2-2-8", title: "33++ Izin Lainnya", link: "/layanan" },
-      ],
-    },
-    {
-      id: "2-3",
-      title: "Lainnya",
-      children: [
-        {
-          id: "2-3-1",
-          title: "Virtual Office",
-          link: "/layanan/virtual-office",
-        },
-        {
-          id: "2-3-2",
-          title: "Perubahan Anggaran Dasar",
-          link: "/layanan/perubahan-anggaran-dasar",
-        },
-        {
-          id: "2-3-3",
-          title: "Penutupan Perusahaan",
-          link: "/layanan/penutupan-perusahaan",
-        },
-        {
-          id: "2-3-4",
-          title: "Perjanjian Pisah Harta",
-          link: "/layanan/akta-pisah-harta",
-        },
-        {
-          id: "2-3-5",
-          title: "Pendaftaran Merek",
-          link: "/layanan/daftar-merek",
-        },
-        { id: "2-3-6", title: "KITAS Pekerja", link: "/layanan/kitas-pekerja" },
-        {
-          id: "2-3-7",
-          title: "KITAS Investor",
-          link: "/layanan/kitas-investor",
-        },
-        { id: "2-3-8", title: "17++ Layanan", link: "/layanan" },
-      ],
-    },
-  ]);
-
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [bannerMenuItems, setBannerMenuItems] = useState<MenuItemsWithBanner[]>(
-    [
-      {
-        id: "m-1",
-        menuName: "Paket PT + VO Jakarta Selatan",
-        bannerImg: "/images/category-banner-01.png",
-        link: "/layanan/pembuatan-pt-virtual-office",
-      },
-      {
-        id: "m-2",
-        menuName: "Paket PT + VO Jakarta Pusat",
-        bannerImg: "/images/category-banner-01.png",
-        link: "/layanan/pembuatan-pt-virtual-office",
-      },
-      {
-        id: "m-3",
-        menuName: "Paket PT + VO Jakarta Utara",
-        bannerImg: "/images/category-banner-02.png",
-        link: "/layanan/pembuatan-pt-virtual-office",
-      },
-      {
-        id: "m-4",
-        menuName: "Paket PT + VO Jakarta Barat",
-        bannerImg: "/images/category-banner-01.png",
-        link: "/tulisan/rekomendasi-virtual-office-jakarta",
-      },
-      {
-        id: "m-5",
-        menuName: "Paket PT + VO Jakarta Timur",
-        bannerImg: "/images/category-banner-01.png",
-        link: "/layanan/pembuatan-pt-virtual-office",
-      },
-      {
-        id: "m-6",
-        menuName: "Paket PT + VO SCBD",
-        bannerImg: "/images/category-banner-02.png",
-        link: "tulisan/rekomendasi-virtual-office-jakarta",
-      },
-    ]
+    []
   );
 
+  // UI State
   const [editingCategory, setEditingCategory] =
     useState<ServiceCategory | null>(null);
   const [editingService, setEditingService] = useState<ServiceItem | null>(
@@ -198,27 +70,24 @@ export default function ServiceManagement() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set()
   );
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [menuId, setMenuId] = useState<string | null>(null);
 
-  // Generate unique ID
-  const generateId = (prefix = "") => {
-    return `${prefix}${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  };
-
-  // Category Functions
+  // Category handlers
   const handleSaveCategory = () => {
     if (!editingCategory) return;
 
-    if (editingCategory.id.startsWith("new-")) {
-      // Adding new category
-      const newCategory = { ...editingCategory, id: generateId("cat-") };
-      setCategories([...categories, newCategory]);
-    } else {
-      // Updating existing category
+    if (editingCategory._id) {
+      // Update existing category
       setCategories(
         categories.map((cat) =>
-          cat.id === editingCategory.id ? editingCategory : cat
+          cat._id === editingCategory._id ? editingCategory : cat
         )
       );
+    } else {
+      // Add new category (will get _id from database after save)
+      setCategories([...categories, editingCategory]);
     }
 
     setEditingCategory(null);
@@ -226,34 +95,33 @@ export default function ServiceManagement() {
   };
 
   const handleDeleteCategory = (id: string) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
+    setCategories(categories.filter((cat) => cat._id !== id));
   };
 
-  // Service Functions
+  // Service handlers
   const handleSaveService = () => {
     if (!editingService || !editingCategoryId) return;
 
-    if (editingService.id.startsWith("new-")) {
-      // Adding new service
-      const newService = { ...editingService, id: generateId("svc-") };
+    if (editingService._id) {
+      // Update existing service
       setCategories(
         categories.map((cat) =>
-          cat.id === editingCategoryId
-            ? { ...cat, children: [...cat.children, newService] }
+          cat._id === editingCategoryId
+            ? {
+                ...cat,
+                children: cat.children.map((svc) =>
+                  svc._id === editingService._id ? editingService : svc
+                ),
+              }
             : cat
         )
       );
     } else {
-      // Updating existing service
+      // Add new service (will get _id from database after save)
       setCategories(
         categories.map((cat) =>
-          cat.id === editingCategoryId
-            ? {
-                ...cat,
-                children: cat.children.map((svc) =>
-                  svc.id === editingService.id ? editingService : svc
-                ),
-              }
+          cat._id === editingCategoryId
+            ? { ...cat, children: [...cat.children, editingService] }
             : cat
         )
       );
@@ -267,31 +135,30 @@ export default function ServiceManagement() {
   const handleDeleteService = (categoryId: string, serviceId: string) => {
     setCategories(
       categories.map((cat) =>
-        cat.id === categoryId
+        cat._id === categoryId
           ? {
               ...cat,
-              children: cat.children.filter((svc) => svc.id !== serviceId),
+              children: cat.children.filter((svc) => svc._id !== serviceId),
             }
           : cat
       )
     );
   };
 
-  // Banner Menu Functions
+  // Banner item handlers
   const handleSaveBannerItem = () => {
     if (!editingBannerItem) return;
 
-    if (editingBannerItem.id.startsWith("new-")) {
-      // Adding new banner item
-      const newItem = { ...editingBannerItem, id: generateId("m-") };
-      setBannerMenuItems([...bannerMenuItems, newItem]);
-    } else {
-      // Updating existing banner item
+    if (editingBannerItem._id) {
+      // Update existing banner item
       setBannerMenuItems(
         bannerMenuItems.map((item) =>
-          item.id === editingBannerItem.id ? editingBannerItem : item
+          item._id === editingBannerItem._id ? editingBannerItem : item
         )
       );
+    } else {
+      // Add new banner item (will get _id from database after save)
+      setBannerMenuItems([...bannerMenuItems, editingBannerItem]);
     }
 
     setEditingBannerItem(null);
@@ -299,7 +166,7 @@ export default function ServiceManagement() {
   };
 
   const handleDeleteBannerItem = (id: string) => {
-    setBannerMenuItems(bannerMenuItems.filter((item) => item.id !== id));
+    setBannerMenuItems(bannerMenuItems.filter((item) => item._id !== id));
   };
 
   // Toggle expand/collapse
@@ -313,6 +180,109 @@ export default function ServiceManagement() {
     setExpandedCategories(newExpanded);
   };
 
+  // Save all data - only UPDATE existing data
+  const saveAllData = async () => {
+    if (!menuId) {
+      console.error("No menu ID found - cannot update");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const payload = {
+        services: categories,
+        servicesWithBanner: {
+          title: "Services With Banner",
+          children: bannerMenuItems,
+        },
+      };
+
+      // Always use PUT to update existing data
+      const response = await fetch(`/api/menu-services/${menuId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      // Update local state with any new _ids from database
+      if (result.services) {
+        setCategories(result.services);
+      }
+      if (result.servicesWithBanner?.children) {
+        setBannerMenuItems(result.servicesWithBanner.children);
+      }
+
+      console.log("Data updated successfully:", result);
+      alert("All data updated successfully!");
+    } catch (error) {
+      console.error("Error updating data:", error);
+      alert("Error updating data. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Load data from API
+  const loadAllData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/menu-services", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const { data } = await response.json();
+
+        // Store the main document _id
+        if (data._id) {
+          setMenuId(data._id);
+        }
+
+        // Load services (categories)
+        if (data.services) {
+          setCategories(data.services);
+        }
+
+        // Load banner items from servicesWithBanner.children
+        if (data.servicesWithBanner?.children) {
+          setBannerMenuItems(data.servicesWithBanner.children);
+        }
+
+        console.log("Data loaded successfully:", data);
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load data on component mount
+  useEffect(() => {
+    loadAllData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-lg">Loading service data...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-6 max-w-6xl">
       <div className="mb-8">
@@ -320,6 +290,9 @@ export default function ServiceManagement() {
         <p className="text-muted-foreground">
           Manage service categories and banner menu items
         </p>
+        {menuId && (
+          <p className="text-sm text-muted-foreground">Document ID: {menuId}</p>
+        )}
       </div>
 
       <Tabs defaultValue="services" className="w-full">
@@ -341,7 +314,6 @@ export default function ServiceManagement() {
               <Button
                 onClick={() => {
                   setEditingCategory({
-                    id: "new-" + Date.now(),
                     title: "",
                     children: [],
                   });
@@ -355,16 +327,16 @@ export default function ServiceManagement() {
 
               <div className="space-y-4">
                 {categories.map((category) => {
-                  const isExpanded = expandedCategories.has(category.id);
+                  const isExpanded = expandedCategories.has(category._id!);
                   return (
-                    <Card key={category.id} className="border-2">
+                    <Card key={category._id} className="border-2">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => toggleExpanded(category.id)}
+                              onClick={() => toggleExpanded(category._id!)}
                             >
                               {isExpanded ? (
                                 <ChevronDown className="w-4 h-4" />
@@ -377,7 +349,8 @@ export default function ServiceManagement() {
                                 {category.title}
                               </CardTitle>
                               <p className="text-sm text-muted-foreground">
-                                {category.children.length} services
+                                {category.children.length} services • ID:{" "}
+                                {category._id}
                               </p>
                             </div>
                           </div>
@@ -387,11 +360,10 @@ export default function ServiceManagement() {
                               size="sm"
                               onClick={() => {
                                 setEditingService({
-                                  id: "new-" + Date.now(),
                                   title: "",
                                   link: "",
                                 });
-                                setEditingCategoryId(category.id);
+                                setEditingCategoryId(category._id!);
                                 setIsServiceDialogOpen(true);
                               }}
                             >
@@ -410,7 +382,9 @@ export default function ServiceManagement() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDeleteCategory(category.id)}
+                              onClick={() =>
+                                handleDeleteCategory(category._id!)
+                              }
                             >
                               <Trash2 className="w-3 h-3" />
                             </Button>
@@ -423,7 +397,7 @@ export default function ServiceManagement() {
                           <div className="space-y-2">
                             {category.children.map((service) => (
                               <div
-                                key={service.id}
+                                key={service._id}
                                 className="flex items-center justify-between p-3 border rounded-lg"
                               >
                                 <div>
@@ -433,6 +407,9 @@ export default function ServiceManagement() {
                                   <div className="text-sm text-muted-foreground">
                                     {service.link}
                                   </div>
+                                  <div className="text-xs text-muted-foreground">
+                                    ID: {service._id}
+                                  </div>
                                 </div>
                                 <div className="flex gap-2">
                                   <Button
@@ -440,7 +417,7 @@ export default function ServiceManagement() {
                                     size="sm"
                                     onClick={() => {
                                       setEditingService(service);
-                                      setEditingCategoryId(category.id);
+                                      setEditingCategoryId(category._id!);
                                       setIsServiceDialogOpen(true);
                                     }}
                                   >
@@ -451,8 +428,8 @@ export default function ServiceManagement() {
                                     size="sm"
                                     onClick={() =>
                                       handleDeleteService(
-                                        category.id,
-                                        service.id
+                                        category._id!,
+                                        service._id!
                                       )
                                     }
                                   >
@@ -488,7 +465,6 @@ export default function ServiceManagement() {
               <Button
                 onClick={() => {
                   setEditingBannerItem({
-                    id: "new-" + Date.now(),
                     menuName: "",
                     bannerImg: "",
                     link: "",
@@ -503,7 +479,7 @@ export default function ServiceManagement() {
 
               <div className="grid gap-4">
                 {bannerMenuItems.map((item) => (
-                  <Card key={item.id} className="border-2">
+                  <Card key={item._id} className="border-2">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
@@ -522,6 +498,9 @@ export default function ServiceManagement() {
                             <h3 className="font-semibold">{item.menuName}</h3>
                             <p className="text-sm text-muted-foreground">
                               {item.link}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              ID: {item._id}
                             </p>
                             <Badge variant="outline" className="mt-1">
                               {item.bannerImg ? "Image uploaded" : "No image"}
@@ -542,7 +521,7 @@ export default function ServiceManagement() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleDeleteBannerItem(item.id)}
+                            onClick={() => handleDeleteBannerItem(item._id!)}
                           >
                             <Trash2 className="w-3 h-3" />
                           </Button>
@@ -565,9 +544,7 @@ export default function ServiceManagement() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingCategory?.id.startsWith("new-")
-                ? "Add New Category"
-                : "Edit Category"}
+              {!editingCategory?._id ? "Add New Category" : "Edit Category"}
             </DialogTitle>
             <DialogDescription>
               Configure the category details
@@ -589,6 +566,11 @@ export default function ServiceManagement() {
                   placeholder="Category name"
                 />
               </div>
+              {editingCategory._id && (
+                <div className="text-sm text-muted-foreground">
+                  Category ID: {editingCategory._id}
+                </div>
+              )}
               <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
@@ -611,9 +593,7 @@ export default function ServiceManagement() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingService?.id.startsWith("new-")
-                ? "Add New Service"
-                : "Edit Service"}
+              {!editingService?._id ? "Add New Service" : "Edit Service"}
             </DialogTitle>
             <DialogDescription>Configure the service details</DialogDescription>
           </DialogHeader>
@@ -647,6 +627,11 @@ export default function ServiceManagement() {
                   placeholder="/layanan/service-name"
                 />
               </div>
+              {editingService._id && (
+                <div className="text-sm text-muted-foreground">
+                  Service ID: {editingService._id}
+                </div>
+              )}
               <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
@@ -669,7 +654,7 @@ export default function ServiceManagement() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingBannerItem?.id.startsWith("new-")
+              {!editingBannerItem?._id
                 ? "Add New Banner Menu Item"
                 : "Edit Banner Menu Item"}
             </DialogTitle>
@@ -741,6 +726,11 @@ export default function ServiceManagement() {
                   placeholder="/path/to/page"
                 />
               </div>
+              {editingBannerItem._id && (
+                <div className="text-sm text-muted-foreground">
+                  Banner Item ID: {editingBannerItem._id}
+                </div>
+              )}
               <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
@@ -757,6 +747,16 @@ export default function ServiceManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      <div className="text-right">
+        <Button
+          className="mt-10 inline-block"
+          onClick={saveAllData}
+          disabled={isSaving || !menuId}
+        >
+          {isSaving ? "Saving..." : "Save All Data"}
+        </Button>
+      </div>
     </div>
   );
 }
