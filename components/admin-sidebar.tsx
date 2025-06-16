@@ -2,18 +2,18 @@
 
 import {
   ClipboardList,
+  File,
   FileText,
   LayoutDashboard,
   LogOut,
+  Menu,
+  PencilRuler,
   Receipt,
+  Scale,
   Settings,
+  StickyNote,
   UserPlus,
   Users,
-  PencilRuler,
-  Scale,
-  File,
-  TicketCheck,
-  Menu,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -79,9 +79,9 @@ const menuItems = [
     icon: PencilRuler,
   },
   {
-    title: "Voucher Details",
-    url: "/voucher-details",
-    icon: TicketCheck,
+    title: "Service Pages",
+    url: "/service-pages",
+    icon: StickyNote,
   },
   {
     title: "KBLI",
