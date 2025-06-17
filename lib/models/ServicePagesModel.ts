@@ -17,7 +17,7 @@ const DataSchema: Schema<ServicePage> = new mongoose.Schema(
       default: {},
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 const ServicePagesModel: Model<ServicePage> =
