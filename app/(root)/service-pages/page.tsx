@@ -1,5 +1,4 @@
 "use client";
-
 import RichTextEditor from "@/components/CKEditorWrapper";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +24,6 @@ import api from "@/lib/config/axios";
 import { Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-'use client';
 
 import dynamic from 'next/dynamic';
 
