@@ -20,11 +20,11 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/config/axios";
+import { PlanKey, PricingDataType } from "@/types";
 import { Loader2, Plus, Save, Trash2 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-import dynamic from "next/dynamic";
 
 const NoSSRImageUpload = dynamic(() => import("@/components/image-upload"), {
   ssr: false,
@@ -57,23 +57,7 @@ interface ServiceData {
   }>;
   requiredDocuments?: string[];
   choosingBusinessField?: string[];
-  pricing?: {
-    plans: string[];
-    features: Array<{
-      name: string;
-      plans: {
-        "plans-1": boolean;
-        "plans-2": boolean;
-        "plans-3": boolean;
-      };
-    }>;
-    prices: {
-      "plans-1": string;
-      "plans-2": string;
-      "plans-3": string;
-    };
-    footerImg?: string;
-  };
+  pricing?: PricingDataType;
   pricing2?: Array<{
     priceTitle: string;
     price: string;
@@ -114,6 +98,7 @@ export default function AdminPageBuilder() {
   const [activeSection, setActiveSection] = useState("basic");
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const planKeys: PlanKey[] = ["plans-1", "plans-2", "plans-3"];
 
   // API Functions
   const loadServicesFromDatabase = async () => {
@@ -204,7 +189,7 @@ export default function AdminPageBuilder() {
           <Label htmlFor="serviceName">Service Name</Label>
           <Input
             id="serviceName"
-            value={currentServiceData?.serviceBasicInfo.serviceName || ""}
+            value={currentServiceData?.serviceBasicInfo?.serviceName || ""}
             onChange={(e) =>
               updateServiceData("serviceBasicInfo", {
                 ...currentServiceData?.serviceBasicInfo,
@@ -218,7 +203,7 @@ export default function AdminPageBuilder() {
           <Label htmlFor="shortDes">Short Description</Label>
           <Textarea
             id="shortDes"
-            value={currentServiceData?.serviceBasicInfo.shortDes || ""}
+            value={currentServiceData?.serviceBasicInfo?.shortDes || ""}
             onChange={(e) =>
               updateServiceData("serviceBasicInfo", {
                 ...currentServiceData?.serviceBasicInfo,
@@ -233,7 +218,7 @@ export default function AdminPageBuilder() {
           <Textarea
             id="description"
             rows={4}
-            value={currentServiceData?.serviceBasicInfo.description || ""}
+            value={currentServiceData?.serviceBasicInfo?.description || ""}
             onChange={(e) =>
               updateServiceData("serviceBasicInfo", {
                 ...currentServiceData?.serviceBasicInfo,
@@ -246,7 +231,7 @@ export default function AdminPageBuilder() {
         <div>
           <Label htmlFor="thumbnail">Thumbnail Image</Label>
           <NoSSRImageUpload
-            value={currentServiceData?.serviceBasicInfo.thumbnail || ""}
+            value={currentServiceData?.serviceBasicInfo?.thumbnail || ""}
             onChange={(url) =>
               updateServiceData("serviceBasicInfo", {
                 ...currentServiceData?.serviceBasicInfo,
@@ -260,7 +245,9 @@ export default function AdminPageBuilder() {
         <div className="flex items-center space-x-2">
           <Switch
             id="bestSeller"
-            checked={currentServiceData?.serviceBasicInfo.isBestSeller || false}
+            checked={
+              currentServiceData?.serviceBasicInfo?.isBestSeller || false
+            }
             onCheckedChange={(checked) =>
               updateServiceData("serviceBasicInfo", {
                 ...currentServiceData?.serviceBasicInfo,
@@ -295,7 +282,7 @@ export default function AdminPageBuilder() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {currentServiceData?.serviceBasicInfo.lotsOfBonus?.map(
+          {currentServiceData?.serviceBasicInfo?.lotsOfBonus?.map(
             (bonus, index) => (
               <div
                 key={index}
@@ -307,7 +294,7 @@ export default function AdminPageBuilder() {
                     value={bonus.bonusTitle}
                     onChange={(e) => {
                       const newBonus = [
-                        ...(currentServiceData?.serviceBasicInfo.lotsOfBonus ||
+                        ...(currentServiceData?.serviceBasicInfo?.lotsOfBonus ||
                           []),
                       ];
                       newBonus[index] = {
@@ -327,7 +314,7 @@ export default function AdminPageBuilder() {
                     value={bonus.bonusSubTitle}
                     onChange={(e) => {
                       const newBonus = [
-                        ...(currentServiceData?.serviceBasicInfo.lotsOfBonus ||
+                        ...(currentServiceData?.serviceBasicInfo?.lotsOfBonus ||
                           []),
                       ];
                       newBonus[index] = {
@@ -347,7 +334,7 @@ export default function AdminPageBuilder() {
                     value={bonus.icon}
                     onChange={(url) => {
                       const newBonus = [
-                        ...(currentServiceData?.serviceBasicInfo.lotsOfBonus ||
+                        ...(currentServiceData?.serviceBasicInfo?.lotsOfBonus ||
                           []),
                       ];
                       newBonus[index] = { ...bonus, icon: url };
@@ -364,7 +351,7 @@ export default function AdminPageBuilder() {
                   size="sm"
                   onClick={() => {
                     const newBonus =
-                      currentServiceData?.serviceBasicInfo.lotsOfBonus?.filter(
+                      currentServiceData?.serviceBasicInfo?.lotsOfBonus?.filter(
                         (_, i) => i !== index
                       ) || [];
                     updateServiceData("serviceBasicInfo", {
@@ -382,7 +369,7 @@ export default function AdminPageBuilder() {
           <Button
             onClick={() => {
               const newBonus = [
-                ...(currentServiceData?.serviceBasicInfo.lotsOfBonus || []),
+                ...(currentServiceData?.serviceBasicInfo?.lotsOfBonus || []),
                 {
                   bonusTitle: "",
                   bonusSubTitle: "",
@@ -498,7 +485,7 @@ export default function AdminPageBuilder() {
                 <Input
                   value={step.subsection}
                   onChange={(e) => {
-                    const newProcess = [...(currentServiceData.process || [])];
+                    const newProcess = [...(currentServiceData?.process || [])];
                     newProcess[index] = { ...step, subsection: e.target.value };
                     updateServiceData("process", newProcess);
                   }}
@@ -514,7 +501,7 @@ export default function AdminPageBuilder() {
                         content={content}
                         setContent={(html) => {
                           const newProcess = [
-                            ...(currentServiceData.process || []),
+                            ...(currentServiceData?.process || []),
                           ];
                           newProcess[index].content[contentIndex] = html;
                           updateServiceData("process", newProcess);
@@ -526,7 +513,7 @@ export default function AdminPageBuilder() {
                       size="sm"
                       onClick={() => {
                         const newProcess = [
-                          ...(currentServiceData.process || []),
+                          ...(currentServiceData?.process || []),
                         ];
                         newProcess[index].content = newProcess[
                           index
@@ -542,7 +529,7 @@ export default function AdminPageBuilder() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    const newProcess = [...(currentServiceData.process || [])];
+                    const newProcess = [...(currentServiceData?.process || [])];
                     newProcess[index].content.push("");
                     updateServiceData("process", newProcess);
                   }}
@@ -556,7 +543,7 @@ export default function AdminPageBuilder() {
                 variant="destructive"
                 size="sm"
                 onClick={() => {
-                  const newProcess = (currentServiceData.process || []).filter(
+                  const newProcess = (currentServiceData?.process || []).filter(
                     (_, i) => i !== index
                   );
                   updateServiceData("process", newProcess);
@@ -713,84 +700,66 @@ export default function AdminPageBuilder() {
         <div>
           <Label>Plan Names</Label>
           <div className="grid grid-cols-3 gap-4">
-            {currentServiceData?.pricing?.plans.map((plan = "", index) => (
-              <Input
-                key={index}
-                value={plan}
-                onChange={(e) => {
-                  const newPlans = [
-                    ...(currentServiceData?.pricing?.plans || []),
-                  ];
-                  newPlans[index] = e.target.value;
-                  updateServiceData("pricing", {
-                    ...currentServiceData?.pricing,
-                    plans: newPlans,
-                  });
-                }}
-                placeholder={`Plan ${index + 1}`}
-              />
-            ))}
+            {Array.from({ length: 3 }).map((_, index) => {
+              const planValue =
+                currentServiceData?.pricing?.plans?.[index] || "";
+
+              return (
+                <Input
+                  key={index}
+                  value={planValue}
+                  onChange={(e) => {
+                    const currentPlans =
+                      currentServiceData?.pricing?.plans || [];
+                    const newPlans = [...currentPlans];
+
+                    // Fill empty values if needed
+                    while (newPlans.length < 3) {
+                      newPlans.push("");
+                    }
+
+                    newPlans[index] = e.target.value;
+
+                    updateServiceData("pricing", {
+                      ...currentServiceData?.pricing,
+                      plans: newPlans,
+                    });
+                  }}
+                  placeholder={`Plan ${index + 1}`}
+                />
+              );
+            })}
           </div>
         </div>
 
         <div>
           <Label>Plan Prices</Label>
           <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Label className="text-sm">Plan 1 Price</Label>
-              <Input
-                value={currentServiceData?.pricing?.prices["plans-1"] || ""}
-                onChange={(e) =>
-                  updateServiceData("pricing", {
-                    ...currentServiceData?.pricing,
-                    prices: {
-                      ...currentServiceData?.pricing?.prices,
-                      "plans-1": e.target.value,
-                    },
-                  })
-                }
-                placeholder="Rp. 1.000.000"
-              />
-            </div>
-            <div>
-              <Label className="text-sm">Plan 2 Price</Label>
-              <Input
-                value={currentServiceData?.pricing?.prices["plans-2"] || ""}
-                onChange={(e) =>
-                  updateServiceData("pricing", {
-                    ...currentServiceData?.pricing,
-                    prices: {
-                      ...currentServiceData?.pricing?.prices,
-                      "plans-2": e.target.value,
-                    },
-                  })
-                }
-                placeholder="Rp. 2.000.000"
-              />
-            </div>
-            <div>
-              <Label className="text-sm">Plan 3 Price</Label>
-              <Input
-                value={currentServiceData?.pricing?.prices["plans-3"] || ""}
-                onChange={(e) =>
-                  updateServiceData("pricing", {
-                    ...currentServiceData?.pricing,
-                    prices: {
-                      ...currentServiceData?.pricing?.prices,
-                      "plans-3": e.target.value,
-                    },
-                  })
-                }
-                placeholder="Rp. 3.000.000"
-              />
-            </div>
+            {planKeys.map((planKey, index) => (
+              <div key={planKey}>
+                <Label className="text-sm">Plan {index + 1} Price</Label>
+                <Input
+                  value={currentServiceData?.pricing?.prices?.[planKey] ?? ""}
+                  onChange={(e) =>
+                    updateServiceData("pricing", {
+                      ...currentServiceData?.pricing,
+                      prices: {
+                        ...currentServiceData?.pricing?.prices,
+                        [planKey]: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder={`Rp. ${index + 1}.000.000`}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
         <div>
           <Label>Features Comparison</Label>
           <div className="space-y-4">
-            {currentServiceData?.pricing?.features.map((feature, index) => (
+            {currentServiceData?.pricing?.features?.map((feature, index) => (
               <div key={index} className="p-4 border rounded-lg">
                 <div className="grid grid-cols-4 gap-4 items-center">
                   <div>
@@ -973,7 +942,7 @@ export default function AdminPageBuilder() {
             <div>
               <Label>Subtitle</Label>
               <Input
-                value={price.subTitle}
+                value={price?.subTitle}
                 onChange={(e) => {
                   const newPricing = [...(currentServiceData?.pricing2 || [])];
                   newPricing[index] = { ...price, subTitle: e.target.value };
@@ -984,7 +953,7 @@ export default function AdminPageBuilder() {
             </div>
             <div className="flex items-center space-x-2">
               <Switch
-                checked={price.isJobCompletion}
+                checked={price?.isJobCompletion}
                 onCheckedChange={(checked) => {
                   const newPricing = [...(currentServiceData?.pricing2 || [])];
                   newPricing[index] = { ...price, isJobCompletion: checked };
@@ -1047,7 +1016,7 @@ export default function AdminPageBuilder() {
                 <Label>Question ID</Label>
                 <Input
                   type="number"
-                  value={question.id}
+                  value={question?.id || ""}
                   onChange={(e) => {
                     const newQuiz = [...(currentServiceData?.quiz || [])];
                     newQuiz[index] = {
@@ -1062,7 +1031,7 @@ export default function AdminPageBuilder() {
             <div>
               <Label>Question</Label>
               <Textarea
-                value={question.question}
+                value={question?.question || ""}
                 onChange={(e) => {
                   const newQuiz = [...(currentServiceData?.quiz || [])];
                   newQuiz[index] = { ...question, question: e.target.value };
@@ -1075,7 +1044,7 @@ export default function AdminPageBuilder() {
             <div>
               <Label>Options (comma-separated)</Label>
               <Textarea
-                value={question.options}
+                value={question?.options || ""}
                 onChange={(e) => {
                   const newQuiz = [...(currentServiceData?.quiz || [])];
                   newQuiz[index] = { ...question, options: e.target.value };
@@ -1480,7 +1449,7 @@ export default function AdminPageBuilder() {
             <Button
               onClick={() => {
                 const newFeatures = [
-                  ...(currentServiceData?.voucherDetails.features_Price || []),
+                  ...(currentServiceData?.voucherDetails?.features_Price || []),
                   {
                     category: "",
                     name: "",

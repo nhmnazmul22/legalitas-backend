@@ -247,3 +247,17 @@ type ServiceData = {
   quiz: QuizItem[];
   voucherDetails: VoucherDetailsType;
 };
+
+export type PlanKey = `plans-${1 | 2 | 3}`;
+
+export type DynamicPlanKey = `plans-${number}`;
+
+export interface PricingDataType {
+  plans: string[];
+  features: Array<{
+    name: string;
+    plans: Record<PlanKey, boolean>;
+  }>;
+  prices: Record<PlanKey, string>;
+  footerImg?: string;
+}
