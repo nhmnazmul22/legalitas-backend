@@ -1,7 +1,6 @@
 "use client";
 
 import RichTextEditor from "@/components/CKEditorWrapper";
-import ImageUpload from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +25,18 @@ import api from "@/lib/config/axios";
 import { Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const NoSSRImageUpload = dynamic(() => import('@/components/image-upload'), {
+  ssr: false,
+});
+
+
+
+
+
 
 interface ServiceData {
   serviceBasicInfo: {
@@ -173,7 +184,7 @@ export default function AdminPageBuilder() {
       setIsLoading(false);
     }
   };
-  
+
   // Load services from database on component mount
   useEffect(() => {
     loadServicesFromDatabase();
@@ -238,7 +249,7 @@ export default function AdminPageBuilder() {
 
         <div>
           <Label htmlFor="thumbnail">Thumbnail Image</Label>
-          <ImageUpload
+          <NoSSRImageUpload
             value={currentServiceData?.serviceBasicInfo.thumbnail || ""}
             onChange={(url) =>
               updateServiceData("serviceBasicInfo", {
@@ -336,7 +347,7 @@ export default function AdminPageBuilder() {
                 </div>
                 <div className="flex-1">
                   <Label>Icon Image</Label>
-                  <ImageUpload
+                  <NoSSRImageUpload
                     value={bonus.icon}
                     onChange={(url) => {
                       const newBonus = [
@@ -904,7 +915,7 @@ export default function AdminPageBuilder() {
 
         <div>
           <Label>Footer Image</Label>
-          <ImageUpload
+          <NoSSRImageUpload
             value={currentServiceData?.pricing?.footerImg || ""}
             onChange={(url) =>
               updateServiceData("pricing", {
@@ -1233,7 +1244,7 @@ export default function AdminPageBuilder() {
 
         <div>
           <Label>Voucher Image</Label>
-          <ImageUpload
+          <NoSSRImageUpload
             value={currentServiceData?.voucherDetails?.voucherImg || ""}
             onChange={(url) =>
               updateServiceData("voucherDetails", {
@@ -1247,7 +1258,7 @@ export default function AdminPageBuilder() {
 
         <div>
           <Label>Thumbnail Image</Label>
-          <ImageUpload
+          <NoSSRImageUpload
             value={currentServiceData?.voucherDetails?.thumbnail || ""}
             onChange={(url) =>
               updateServiceData("voucherDetails", {
