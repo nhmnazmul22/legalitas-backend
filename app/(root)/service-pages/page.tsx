@@ -108,34 +108,6 @@ export default function AdminPageBuilder() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load services from database on component mount
-  useEffect(() => {
-    loadServicesFromDatabase();
-  }, []);
-
-  const loadServicesData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await api.get(`/api/service-pages/${selectedService}`);
-      if (response.status === 200) {
-        const data = response.data.data;
-        setCurrentServiceData(data);
-      }
-    } catch (error) {
-      console.error("Error loading services:", error);
-      toast.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Load service data when selection changes
-  useEffect(() => {
-    if (selectedService) {
-      loadServicesData();
-    }
-  }, [selectedService]);
-
   // API Functions
   const loadServicesFromDatabase = async () => {
     setIsLoading(true);
@@ -185,6 +157,34 @@ export default function AdminPageBuilder() {
       [section]: data,
     }));
   };
+
+  const loadServicesData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/api/service-pages/${selectedService}`);
+      if (response.status === 200) {
+        const data = response.data.data;
+        setCurrentServiceData(data);
+      }
+    } catch (error) {
+      console.error("Error loading services:", error);
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Load services from database on component mount
+  useEffect(() => {
+    loadServicesFromDatabase();
+  }, []);
+
+  // Load service data when selection changes
+  useEffect(() => {
+    if (selectedService) {
+      loadServicesData();
+    }
+  }, [selectedService]);
 
   const renderBasicInfoEditor = () => (
     <Card>

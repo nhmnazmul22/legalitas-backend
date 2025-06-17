@@ -133,7 +133,11 @@ export default function ImageUpload({
                     variant="secondary"
                     size="sm"
                     className="absolute top-2 left-2"
-                    onClick={() => window.open(value, "_blank")}
+                    onClick={() => {
+                      if (typeof window !== undefined) {
+                        window.open(value, "_blank");
+                      }
+                    }}
                   >
                     <ExternalLink className="w-4 h-4" />
                   </Button>
