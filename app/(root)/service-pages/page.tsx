@@ -1,5 +1,4 @@
 "use client";
-import RichTextEditor from "@/components/CKEditorWrapper";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,16 +24,15 @@ import { Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const NoSSRImageUpload = dynamic(() => import('@/components/image-upload'), {
+const NoSSRImageUpload = dynamic(() => import("@/components/image-upload"), {
   ssr: false,
 });
 
-
-
-
-
+const CKEditorWrapper = dynamic(() => import("@/components/CKEditorWrapper"), {
+  ssr: false,
+});
 
 interface ServiceData {
   serviceBasicInfo: {
@@ -431,7 +429,7 @@ export default function AdminPageBuilder() {
           {currentServiceData?.introduction?.content?.map((content, index) => (
             <div key={index} className="flex gap-2">
               <div className="flex-1">
-                <RichTextEditor
+                <CKEditorWrapper
                   content={content}
                   setContent={(html) => {
                     const newContent = [
@@ -512,7 +510,7 @@ export default function AdminPageBuilder() {
                 {step.content.map((content, contentIndex) => (
                   <div key={contentIndex} className="flex gap-2">
                     <div className="flex-1">
-                      <RichTextEditor
+                      <CKEditorWrapper
                         content={content}
                         setContent={(html) => {
                           const newProcess = [
@@ -1145,7 +1143,7 @@ export default function AdminPageBuilder() {
             </div>
             <div>
               <Label>Answer</Label>
-              <RichTextEditor
+              <CKEditorWrapper
                 content={faq.ans}
                 setContent={(html) => {
                   const newFaqs = [...(currentServiceData?.faqs || [])];

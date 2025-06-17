@@ -134,7 +134,7 @@ export default function ImageUpload({
                     size="sm"
                     className="absolute top-2 left-2"
                     onClick={() => {
-                      if (typeof window !== undefined) {
+                      if (typeof window !== "undefined") {
                         window.open(value, "_blank");
                       }
                     }}
