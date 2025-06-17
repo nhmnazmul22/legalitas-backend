@@ -52,18 +52,25 @@ interface ServiceData {
     isBoxStyle: boolean;
   };
   process?: Array<{
-    subsection: string;
+    subsection?: string;
     content: string[];
   }>;
   requiredDocuments?: string[];
   choosingBusinessField?: string[];
+  conditions?: {
+    title: string;
+    content: {
+      title: string;
+      items: string[];
+    }[];
+  };
   pricing?: PricingDataType;
-  pricing2?: Array<{
+  pricing2?: {
     priceTitle: string;
     price: string;
     subTitle: string;
     isJobCompletion: boolean;
-  }>;
+  }[];
   virtualOffice?: boolean;
   faqs: Array<{
     question: string;
