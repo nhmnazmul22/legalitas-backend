@@ -1,15 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Plus,
-  Trash2,
-  Save,
-  Edit,
-  ChevronDown,
-  ChevronRight,
-  ImageIcon,
-} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -27,8 +16,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
+import api from "@/lib/config/axios";
+import {
+  ChevronDown,
+  ChevronRight,
+  Edit,
+  ImageIcon,
+  Plus,
+  Save,
+  Trash2,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface ServiceItem {
@@ -72,6 +73,7 @@ export default function ServiceManagement() {
     new Set()
   );
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [menuId, setMenuId] = useState<string | null>(null);
 
@@ -127,8 +129,7 @@ export default function ServiceManagement() {
         )
       );
     }
-
-    setEditingService(null);
+    setIsDeleting(false);
     setEditingCategoryId("");
     setIsServiceDialogOpen(false);
   };
@@ -144,6 +145,7 @@ export default function ServiceManagement() {
           : cat
       )
     );
+    setIsDeleting(true);
   };
 
   // Banner item handlers
@@ -198,7 +200,6 @@ export default function ServiceManagement() {
         },
       };
 
-      // Always use PUT to update existing data
       const response = await fetch(`/api/menu-services/${menuId}`, {
         method: "PUT",
         headers: {
@@ -213,7 +214,18 @@ export default function ServiceManagement() {
 
       const result = await response.json();
 
-      // Update local state with any new _ids from database
+      if (!isDeleting) {
+        const res = await api.put(
+          `/api/service-pages/${editingService?.title}`,
+          { serviceBasicInfo: {} }
+        );
+
+        if (res.status === 201 || res.status === 200) {
+          toast.success("Service page added");
+        } else {
+          toast.error("Error occurred Service page  added");
+        }
+      }
       if (result.services) {
         setCategories(result.services);
       }

@@ -116,19 +116,17 @@ export const PUT = async (
       );
     }
 
-    // Check if the key already exists in the Map
     const existingPage = servicePages.documents.get(serviceName);
 
     if (!existingPage) {
-      // ❗Create a new entry
       servicePages.documents.set(serviceName, body);
     } else {
-      // 🔁 Merge with existing data
       const updatedPage = { ...existingPage, ...body };
       servicePages.documents.set(serviceName, updatedPage);
     }
 
-    await servicePages.save(); // 💾 Save changes to DB
+    servicePages.markModified("documents");
+    await servicePages.save();
 
     const savedData = servicePages.documents.get(serviceName);
 

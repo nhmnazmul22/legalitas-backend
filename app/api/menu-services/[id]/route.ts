@@ -1,5 +1,4 @@
 import { dbConnect } from "@/lib/config/db";
-import InvoiceModel from "@/lib/models/InvoiceModel";
 import MenuServicesModel from "@/lib/models/ServiceMenuModel";
 import { deleteItemById, getCorsHeaders } from "@/lib/utils";
 import { getToken } from "next-auth/jwt";
@@ -151,4 +150,3 @@ export async function DELETE(
     );
   }
 }
-
