@@ -91,7 +91,6 @@ export const PUT = async (
   const headers = getCorsHeaders(request);
   const blogId = (await params).id;
   try {
-   
     const body = await request.json();
     const updatedData = { ...body };
 
@@ -127,9 +126,16 @@ export const PUT = async (
       updatedData["comments"] = [...prevBlog.comments, body["comments"]];
     }
 
-    const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, updatedData, {
-      new: true,
-    });
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+      blogId,
+      {
+        ...updatedData,
+        thumbnail: `https://202.74.74.123${updatedData.thumbnail}`,
+      },
+      {
+        new: true,
+      }
+    );
 
     return NextResponse.json(
       { status: "Successful", data: updatedBlog },
